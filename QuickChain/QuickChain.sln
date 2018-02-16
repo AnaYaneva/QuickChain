@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickChain.Miner", "QuickCh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickChain.Model", "QuickChain.Model\QuickChain.Model.csproj", "{3FA77C2D-39FB-4D63-8C11-7B8E6333E15F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickChain.Node", "QuickChain.Node\QuickChain.Node.csproj", "{6BDDEF61-0A6B-42A6-B9D7-1C6A215FEA26}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{3FA77C2D-39FB-4D63-8C11-7B8E6333E15F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FA77C2D-39FB-4D63-8C11-7B8E6333E15F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3FA77C2D-39FB-4D63-8C11-7B8E6333E15F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BDDEF61-0A6B-42A6-B9D7-1C6A215FEA26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BDDEF61-0A6B-42A6-B9D7-1C6A215FEA26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BDDEF61-0A6B-42A6-B9D7-1C6A215FEA26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BDDEF61-0A6B-42A6-B9D7-1C6A215FEA26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
