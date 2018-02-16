@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.6
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickChain.Web", "QuickChain.Web\QuickChain.Web.csproj", "{0966DC0E-F7F8-4F6C-9880-9CA88049ED46}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickChain.Miner", "QuickChain.Miner\QuickChain.Miner.csproj", "{03F4397D-42B7-4710-98AC-116E9C15165D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickChain.Model", "QuickChain.Model\QuickChain.Model.csproj", "{3FA77C2D-39FB-4D63-8C11-7B8E6333E15F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0966DC0E-F7F8-4F6C-9880-9CA88049ED46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0966DC0E-F7F8-4F6C-9880-9CA88049ED46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0966DC0E-F7F8-4F6C-9880-9CA88049ED46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0966DC0E-F7F8-4F6C-9880-9CA88049ED46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03F4397D-42B7-4710-98AC-116E9C15165D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03F4397D-42B7-4710-98AC-116E9C15165D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03F4397D-42B7-4710-98AC-116E9C15165D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03F4397D-42B7-4710-98AC-116E9C15165D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FA77C2D-39FB-4D63-8C11-7B8E6333E15F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FA77C2D-39FB-4D63-8C11-7B8E6333E15F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FA77C2D-39FB-4D63-8C11-7B8E6333E15F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FA77C2D-39FB-4D63-8C11-7B8E6333E15F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

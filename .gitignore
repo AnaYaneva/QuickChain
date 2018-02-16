@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+*.suo
+/QuickChain/QuickChain.Model/bin
+/QuickChain/QuickChain.Model/obj
+/QuickChain/QuickChain.Miner/bin
+/QuickChain/QuickChain.Miner/obj
+/QuickChain/QuickChain.Web/bin
+/QuickChain/QuickChain.Web/obj
