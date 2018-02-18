@@ -9,7 +9,7 @@ namespace QuickChain.Model
     {
         public int Height { get; set; }
         public DateTime TimeStamp { get; set; }
-        public IList<Transaction> Transactions { get; set; }
+        public IList<Transaction> Transactions { get; set; } = new List<Transaction>();
         public string Hash { get; set; }
         public string ParentHash { get; set; }
         public BigInteger Difficulty { get; set; }

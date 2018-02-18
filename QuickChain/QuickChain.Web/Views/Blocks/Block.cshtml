@@ -1,0 +1,11 @@
+@using QuickChain.Model
+@model Block
+
+<h2>Block: @Model.Height</h2>
+<div class="container">
+    <p>Hash: @Model.Hash</p>
+    <p>Parent Hash: @Model.ParentHash</p>
+    <p>Size: @Model.Size bytes</p>
+    <p>Time: @Model.TimeStamp</p>
+    <p>Transactions: <a asp-area="" asp-controller="Blocks" asp-action="Transactions" asp-route-id="@Model.Height">@Model.Transactions.Count</a></p>
+</div>
