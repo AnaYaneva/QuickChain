@@ -1,0 +1,34 @@
+<main>
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+            <form class="form-horizontal" >
+                <fieldset>
+                    <legend>This is your wallet</legend>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <article>
+
+                                <h4>Write down the following mnemonic words. With the mnemonic words you can recover this wallet:</h4>
+                                <p th:text="${address.mnemonic}"></p>
+
+                                <h4>
+                                    Write down and keep in SECURE place your private key. Only through it you can access
+                                    your coins:</h4>
+                               <p th:text="${address.privateKey}"></p>
+
+                                <h4>
+                                    Public key:</h4>
+                                <p th:text="${address.publicKey}"></p>
+
+                                <h4>
+                                    Address:</h4>
+                                <p th:text="${address.address}"></p>
+                            </article>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</main>
