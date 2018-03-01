@@ -1,14 +1,10 @@
 package wallet.controller;
 
-import wallet.bindingModel.AddressBindingModel;
+import wallet.bindingModel.AddressNewBindingModel;
+import wallet.bindingModel.AddressRestoreBindingModel;
 import wallet.entity.*;
 import wallet.service.AddressService;
 import wallet.service.crypto.EnglishWords;
-import org.bouncycastle.crypto.digests.RIPEMD160Digest;
-import org.bouncycastle.jce.ECNamedCurveTable;
-import org.bouncycastle.jce.spec.ECNamedCurveParameterSpec;
-import org.bouncycastle.math.ec.ECPoint;
-import org.bouncycastle.util.encoders.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,15 +12,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.IOException;
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 @Controller
 public class AddressController {
 
     private Address address;
+    private Address addressCreated;
 
     @Autowired
     private AddressService addressService;
@@ -37,28 +31,31 @@ public class AddressController {
         return "base-layout";
     }
 
-    @GetMapping("/address/details")
-    public String details(Model model) throws IOException, NoSuchAlgorithmException {
-        EnglishWords englishWords = new EnglishWords();
+    @PostMapping("/address/create")
+    public String createProcess(AddressNewBindingModel addressNewBindingModel) throws NoSuchAlgorithmException {
 
-        Address addressCreated = new Address();
+        EnglishWords englishWords = new EnglishWords();
+        addressCreated = new Address();
 
         String mnemonic = englishWords.getMnemonic();
         addressCreated.setMnemonic(mnemonic);
 
+        String password = addressNewBindingModel.getPassword();
+        byte[] privateKey=this.addressService.getPrivateKeyFromMnemonic(mnemonic.replace(" ","")+password);
+        addressCreated.setPrivateKey(this.addressService.getStringFromBytes(privateKey));
 
-        byte[] privateKey=getPrivateKeyFromMnemonic(mnemonic.replace(" ",""));
-        addressCreated.setPrivateKey(getStringFromBytes(privateKey));
 
-        //BigInteger d = new BigInteger(hash);
-        //var q = Domain.G.Multiply(d);
-
-        //var publicParams = new ECPublicKeyParameters(q, Domain);
-        String publicKey=getStringFromBytes(getPublicKey(privateKey));
+        String publicKey=this.addressService.getStringFromBytes(this.addressService.getPublicKey(privateKey));
         addressCreated.setPublicKey(publicKey);
 
 
-        addressCreated.setAddress(getAddressFromPublicKey(publicKey));
+        addressCreated.setAddress(this.addressService.getAddressFromPublicKey(publicKey));
+
+        return "redirect:/address/details";
+    }
+
+    @GetMapping("/address/details")
+    public String details(Model model) throws IOException, NoSuchAlgorithmException {
 
         model.addAttribute("address", addressCreated);
         model.addAttribute("view", "address/details");
@@ -76,19 +73,21 @@ public class AddressController {
     }
 
     @PostMapping("/address/restore")
-    public String restoreProcess(AddressBindingModel addressBindingModel) throws NoSuchAlgorithmException {
+    public String restoreProcess(AddressRestoreBindingModel addressRestoreBindingModel) throws NoSuchAlgorithmException {
 
         address = new Address();
-        String mnemonic = addressBindingModel.getMnemonic();
+        String mnemonic = addressRestoreBindingModel.getMnemonic();
+        String password = addressRestoreBindingModel.getPassword();
+
         address.setMnemonic(mnemonic);
 
-        byte[] privateKeyBytes=getPrivateKeyFromMnemonic(mnemonic.replace(" ",""));
-        address.setPrivateKey(getStringFromBytes(privateKeyBytes));
+        byte[] privateKeyBytes=this.addressService.getPrivateKeyFromMnemonic(mnemonic.replace(" ","")+password);
+        address.setPrivateKey(this.addressService.getStringFromBytes(privateKeyBytes));
 
-        String publicKey=getStringFromBytes(getPublicKey(privateKeyBytes));
+        String publicKey=this.addressService.getStringFromBytes(this.addressService.getPublicKey(privateKeyBytes));
         address.setPublicKey(publicKey);
 
-        String addresss = getAddressFromPublicKey(publicKey);
+        String addresss =this.addressService.getAddressFromPublicKey(publicKey);
         address.setAddress(addresss);
 
         return "redirect:/address/detailsRestored";
@@ -103,7 +102,7 @@ public class AddressController {
         return "base-layout";
     }
 
-    private byte[] getPrivateKeyFromMnemonic(String mnemonic) throws NoSuchAlgorithmException {
+    /*private byte[] getPrivateKeyFromMnemonic(String mnemonic) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(
                 mnemonic.getBytes(StandardCharsets.UTF_8));
@@ -137,7 +136,7 @@ public class AddressController {
         byte[] o = new byte[d.getDigestSize()];
         d.doFinal(o, 0);
         return new String(Hex.encode(o));
-    }
+    }*/
 
 
     //public static void main(String[] args) throws IOException {
@@ -155,5 +154,6 @@ public class AddressController {
 //
     //    System.out.println(address.getAddress());
     //}
+
 
 }

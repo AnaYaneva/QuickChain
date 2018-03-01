@@ -2070,10 +2070,4 @@ public class EnglishWords {
 
         return String.join(" ",mnem);
     }
-
-    //public static void main(String[] args) {
-    //    EnglishWords words=new EnglishWords();
-    //    String mnem=words.getMnemonic();
-    //    System.out.println(mnem);
-    //}
 }

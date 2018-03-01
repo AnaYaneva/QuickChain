@@ -4,12 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import wallet.bindingModel.AddressBindingModel;
 import wallet.bindingModel.TransactionBindingModel;
-import wallet.entity.Address;
 import wallet.entity.Transaction;
-
-import java.security.NoSuchAlgorithmException;
 
 @Controller
 public class TransactionController {
