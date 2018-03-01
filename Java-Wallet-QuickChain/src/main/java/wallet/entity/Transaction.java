@@ -1,26 +1,39 @@
 package wallet.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 
 public class Transaction {
+
+    @JsonProperty("from")
     private String from;
 
+    @JsonProperty("to")
     private String to;
 
-    private int value;
+    @JsonProperty("value")
+    private long value;
 
-    private int fee;
+    @JsonProperty("fee")
+    private long fee;
 
+    @JsonProperty("dateCreated")
     private Date dateCreated;
 
+    @JsonProperty("senderPubKey")
     private String senderPubKey;
 
+    @JsonProperty("senderSignature")
     private String[] senderSignature;
 
+    @JsonProperty("transactionHash")
     private String transactionHash;
 
-    private Integer minedInBlockIndex;
+    @JsonProperty("from")
+    private Long minedInBlockIndex;
 
+    @JsonProperty("from")
     private boolean transferSuccessful;
 
     public Transaction() {
@@ -45,19 +58,19 @@ public class Transaction {
         this.to = to;
     }
 
-    public int getValue() {
+    public long getValue() {
         return this.value;
     }
 
-    public void setValue(int value) {
+    public void setValue(long value) {
         this.value = value;
     }
 
-    public int getFee() {
+    public long getFee() {
         return this.fee;
     }
 
-    public void setFee(int fee) {
+    public void setFee(long fee) {
         this.fee = fee;
     }
 
@@ -93,11 +106,11 @@ public class Transaction {
         this.transactionHash = transactionHash;
     }
 
-    public Integer getMinedInBlockIndex() {
+    public Long getMinedInBlockIndex() {
         return this.minedInBlockIndex;
     }
 
-    public void setMinedInBlockIndex(Integer minedInBlockIndex) {
+    public void setMinedInBlockIndex(Long minedInBlockIndex) {
         this.minedInBlockIndex = minedInBlockIndex;
     }
 }

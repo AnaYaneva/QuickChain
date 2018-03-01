@@ -3,6 +3,7 @@ package wallet.bindingModel;
 import javax.validation.constraints.NotNull;
 
 public class AddressBindingModel {
+
     @NotNull
     private String mnemonic;
 

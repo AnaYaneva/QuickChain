@@ -46,15 +46,19 @@ public class AddressController {
         String mnemonic = englishWords.getMnemonic();
         addressCreated.setMnemonic(mnemonic);
 
-        addressCreated.setPrivateKey(getPrivateKeyFromMnemonic(mnemonic));
+
+        byte[] privateKey=getPrivateKeyFromMnemonic(mnemonic.replace(" ",""));
+        addressCreated.setPrivateKey(getStringFromBytes(privateKey));
 
         //BigInteger d = new BigInteger(hash);
         //var q = Domain.G.Multiply(d);
 
         //var publicParams = new ECPublicKeyParameters(q, Domain);
-        addressCreated.setPublicKey("0431bde103b37da9818dc46b391364d455a3fc57312a48292d5a798c4b07fee917465afc067fe6259a3886fff3cb2e5cc5be930095efda9061baed663dc7f846a0");
+        String publicKey=getStringFromBytes(getPublicKey(privateKey));
+        addressCreated.setPublicKey(publicKey);
 
-        addressCreated.setAddress(getAddressFromPublicKey(addressCreated.getPublicKey()));
+
+        addressCreated.setAddress(getAddressFromPublicKey(publicKey));
 
         model.addAttribute("address", addressCreated);
         model.addAttribute("view", "address/details");
@@ -78,10 +82,10 @@ public class AddressController {
         String mnemonic = addressBindingModel.getMnemonic();
         address.setMnemonic(mnemonic);
 
-        String privateKey = getPrivateKeyFromMnemonic(mnemonic);
-        address.setPrivateKey(privateKey);
+        byte[] privateKeyBytes=getPrivateKeyFromMnemonic(mnemonic.replace(" ",""));
+        address.setPrivateKey(getStringFromBytes(privateKeyBytes));
 
-        String publicKey = "0431bde103b37da9818dc46b391364d455a3fc57312a48292d5a798c4b07fee917465afc067fe6259a3886fff3cb2e5cc5be930095efda9061baed663dc7f846a0";
+        String publicKey=getStringFromBytes(getPublicKey(privateKeyBytes));
         address.setPublicKey(publicKey);
 
         String addresss = getAddressFromPublicKey(publicKey);
@@ -94,15 +98,19 @@ public class AddressController {
     public String detailsRestored(Model model) throws IOException, NoSuchAlgorithmException {
 
         model.addAttribute("address", address);
-        model.addAttribute("view", "address/details");
+        model.addAttribute("view", "address/detailsRestored");
 
         return "base-layout";
     }
 
-    private String getPrivateKeyFromMnemonic(String mnemonic) throws NoSuchAlgorithmException {
+    private byte[] getPrivateKeyFromMnemonic(String mnemonic) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(
                 mnemonic.getBytes(StandardCharsets.UTF_8));
+        return hash;
+    }
+
+    private String getStringFromBytes(byte[] hash){
         return new String(Hex.encode(hash));
     }
 
