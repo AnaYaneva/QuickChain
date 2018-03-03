@@ -1,8 +1,12 @@
 package wallet.bindingModel;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 public class TransactionBindingModel {
+
+    @NotNull
+    private String privateKey;
 
     @NotNull
     private String from;
@@ -11,25 +15,9 @@ public class TransactionBindingModel {
     private String to;
 
     @NotNull
+    @Min(0)
     private long value;
 
-    @NotNull
-    private long fee;
-
-    @NotNull
-    private String dateCreated;
-
-    @NotNull
-    private String senderPubKey;
-
-    @NotNull
-    private String[] senderSignature;
-
-    @NotNull
-    private String transactionHash;
-
-    @NotNull
-    private String minedInBlockIndex;
 
     public TransactionBindingModel() {
     }
@@ -58,51 +46,11 @@ public class TransactionBindingModel {
         this.value = value;
     }
 
-    public long getFee() {
-        return this.fee;
+    public String getPrivateKey() {
+        return this.privateKey;
     }
 
-    public void setFee(long fee) {
-        this.fee = fee;
-    }
-
-    public String getDateCreated() {
-        return this.dateCreated;
-    }
-
-    public void setDateCreated(String dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
-    public String getSenderPubKey() {
-        return this.senderPubKey;
-    }
-
-    public void setSenderPubKey(String senderPubKey) {
-        this.senderPubKey = senderPubKey;
-    }
-
-    public String[] getSenderSignature() {
-        return this.senderSignature;
-    }
-
-    public void setSenderSignature(String[] senderSignature) {
-        this.senderSignature = senderSignature;
-    }
-
-    public String getTransactionHash() {
-        return this.transactionHash;
-    }
-
-    public void setTransactionHash(String transactionHash) {
-        this.transactionHash = transactionHash;
-    }
-
-    public String getMinedInBlockIndex() {
-        return this.minedInBlockIndex;
-    }
-
-    public void setMinedInBlockIndex(String minedInBlockIndex) {
-        this.minedInBlockIndex = minedInBlockIndex;
+    public void setPrivateKey(String privateKey) {
+        this.privateKey = privateKey;
     }
 }

@@ -41,6 +41,7 @@ public class AddressController {
         addressCreated.setMnemonic(mnemonic);
 
         String password = addressNewBindingModel.getPassword();
+
         byte[] privateKey=this.addressService.getPrivateKeyFromMnemonic(mnemonic.replace(" ","")+password);
         addressCreated.setPrivateKey(this.addressService.getStringFromBytes(privateKey));
 

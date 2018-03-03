@@ -1,45 +1,51 @@
 package wallet.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class Transaction {
 
-    @JsonProperty("from")
+    @JsonProperty(value = "from")
     private String from;
 
-    @JsonProperty("to")
+    @JsonProperty(value = "to")
     private String to;
 
-    @JsonProperty("value")
+    @JsonProperty(value = "value")
+    @Min(0)
     private long value;
 
-    @JsonProperty("fee")
+    @JsonProperty(value = "fee")
     private long fee;
 
-    @JsonProperty("dateCreated")
+    @JsonProperty(value = "dateCreated")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ")
     private Date dateCreated;
 
-    @JsonProperty("senderPubKey")
+    @JsonProperty(value = "senderPubKey")
     private String senderPubKey;
 
-    @JsonProperty("senderSignature")
+    @JsonProperty(value = "senderSignature")
     private String[] senderSignature;
 
-    @JsonProperty("transactionHash")
+
     private String transactionHash;
 
-    @JsonProperty("from")
+
     private Long minedInBlockIndex;
 
-    @JsonProperty("from")
+
     private boolean transferSuccessful;
 
     public Transaction() {
         this.senderSignature=new String[2];
         this.transferSuccessful=false;
         this.dateCreated=new Date();
+        this.fee=20L;
     }
 
     public String getFrom() {

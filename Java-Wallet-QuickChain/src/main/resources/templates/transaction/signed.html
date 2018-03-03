@@ -1,0 +1,128 @@
+<main>
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+            <form class="form-horizontal" th:action="@{/transaction/details}" method="POST">
+                <fieldset>
+                    <legend>Make a Transaction</legend>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="address">Sender's Address</label>
+                        <div class="col-sm-4 ">
+                            <p id="address" th:text="${transaction.from}"></p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="rec_address">Receiver's Address</label>
+                        <div class="col-sm-4 ">
+                            <p id="rec_address" th:text="${transaction.to}"></p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="amount">Amount</label>
+                        <div class="col-sm-4 ">
+                            <p id="amount" th:text="${transaction.value}"></p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="fee">Fee</label>
+                        <div class="col-sm-4 ">
+                            <p id="fee" th:text="${transaction.fee}"></p>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="signature">Signature</label>
+                        <div class="col-sm-4 ">
+                            <p id="signature" th:text="${signature}"></p>
+                        </div>
+                    </div>
+
+                    <p id="jsonString" th:text="${jsonString}" style="display: none"></p>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="textBoxNodeAccountBalance">Node Url</label>
+                        <div class="col-sm-4 ">
+                            <input type="text" class="form-control" id="textBoxNodeAccountBalance" value="http://192.168.0.3:5555"
+                                   name="nodeUrl"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <a class="btn btn-default" th:href="@{/transaction/create}">Back</a>
+                            <input type="button" id="buttonSendSignedTransaction" class="btn btn-primary" value="Send Transaction"/>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <textarea class="form-control" rows="6" id="textareaSendTransactionresult" name="sendTransactionresult"></textarea>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</main>
+
+<!--     $('#buttonSignTransaction').click(signTransaction);
+
+function signTransaction() {
+        //let privateKey = window.prompt("To sign a transaction you have to write down your private key")
+        let privateKey = $('input[name="senderPrivateKey"]').val(
+       // if(privateKey) {
+            let ec = new elliptic.ec('secp256k1')
+            let keyPair = ec.keyFromPrivate(privateKey)
+            let publicKey = keyPair.getPublic().getX().toString(16) + (keyPair.getPublic().getY().isOdd() ? "1" : "0")
+                )
+            let from = $('input[name="senderAddress"]').val()
+            let to = $('input[name="recipientAddress"]').val()
+            let value = $('input[name="transferAmount"]').val()
+            let senderPubKey = publicKey
+            let senderSignature = [""]
+            let dateCreated = new Date().toString()
+
+            let transaction = {
+                from:from,
+                to:to,
+                value:value,
+                senderPubKey:senderPubKey,
+                senderSignature:senderSignature,
+                dateCreated:dateCreated
+            }
+
+            let transactionJson = JSON.stringify(transaction)
+
+            let signedTransaction = [from,publicKey]
+
+            $('#textareaSignedTransaction').val(signedTransaction)
+        //}
+        //else {
+        //    window.alert("Invalid private key")
+        //}
+    } -->
+
+<!--  $('#buttonSendSignedTransaction').click(sendSignedTransaction);
+function sendSignedTransaction() {
+        let nodeUrl = $('#textBoxNodeAccountBalance').val()
+        let url = nodeUrl + '/transactions/send'
+
+        jsonRequest = $('#jsonString').val()
+
+        $.ajax({
+            url: url,
+            method: 'post',
+            dataType: 'json',
+            data: jsonRequest,
+            contentType: "application/json",
+            success: function(data) {
+                $('#textareaSendTransactionresult').val(data.responseJSON.transactionHash)
+            },
+            error: function(err){
+                $('#textareaSendTransactionresult').val(err.responseJSON.error)
+            }
+        })
+    }-->

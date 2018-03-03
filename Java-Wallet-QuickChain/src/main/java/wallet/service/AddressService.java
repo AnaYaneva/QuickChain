@@ -1,13 +1,12 @@
 package wallet.service;
 
-
 import org.bouncycastle.crypto.digests.RIPEMD160Digest;
 import org.bouncycastle.jce.ECNamedCurveTable;
 import org.bouncycastle.jce.spec.ECNamedCurveParameterSpec;
 import org.bouncycastle.math.ec.ECPoint;
 import org.bouncycastle.util.encoders.Hex;
 import org.springframework.stereotype.Service;
-
+import javax.xml.bind.DatatypeConverter;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -23,11 +22,15 @@ public class AddressService {
         return hash;
     }
 
+   // public byte[] getBytesFromString(String str){
+   //     return new String(Hex.encode(str));
+   // }
+
     public String getStringFromBytes(byte[] hash){
         return new String(Hex.encode(hash));
     }
 
-    public static byte[] getPublicKey(byte[] privateKey) {
+    public  byte[] getPublicKey(byte[] privateKey) {
         try {
             ECNamedCurveParameterSpec spec = ECNamedCurveTable.getParameterSpec("secp256k1");
             ECPoint pointQ = spec.getG().multiply(new BigInteger(1, privateKey));
@@ -40,7 +43,19 @@ public class AddressService {
             return new byte[0];
         }
     }
+    public  byte[] getPublicKey(String privateKey) {
+        try {
+            ECNamedCurveParameterSpec spec = ECNamedCurveTable.getParameterSpec("secp256k1");
+            ECPoint pointQ = spec.getG().multiply(new BigInteger(1, DatatypeConverter.parseHexBinary(privateKey)));
 
+            return pointQ.getEncoded(false);
+        } catch (Exception e) {
+            //StringWriter errors = new StringWriter();
+            //e.printStackTrace(new PrintWriter(errors));
+            //logger.error(errors.toString());
+            return new byte[0];
+        }
+    }
     public String getAddressFromPublicKey(String publicKey) {
 
         byte[] r = publicKey.getBytes(StandardCharsets.UTF_8);
@@ -50,6 +65,9 @@ public class AddressService {
         d.doFinal(o, 0);
         return new String(Hex.encode(o));
     }
+    /**
+     * Sign data using the ECDSA algorithm.
+     */
 
 
     /*   MessageDigest digest = MessageDigest.getInstance("SHA-256");
