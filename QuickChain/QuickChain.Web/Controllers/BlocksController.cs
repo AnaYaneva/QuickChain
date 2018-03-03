@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using QuickChain.Model;
 
@@ -38,11 +36,10 @@ namespace QuickChain.Web.Controllers
         {
             return View(list.FirstOrDefault(b => b.Height == id));
         }
-        public IActionResult Transactions(int h)
+        public IActionResult Transactions(int blockId)
         {
             return View(list.FirstOrDefault(b => b.Height == 1).Transactions.ToList());
         }
-
         public IActionResult Transaction(string id)
         {
             foreach (var block in list)
@@ -55,6 +52,16 @@ namespace QuickChain.Web.Controllers
             }
 
             return View();
+        }
+
+        public IActionResult PendingTransactions(List<Transaction> penndingList)
+        {
+            return View(penndingList);
+        }
+
+        public IActionResult PendingTransaction(string id)
+        {
+            return View(/*PendingList.where id == id*/);
         }
     }
 }
