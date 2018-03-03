@@ -1,0 +1,28 @@
+<main>
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+            <form class="form-horizontal" th:action="@{/address/create}" method="post">
+                <fieldset>
+                    <legend>Create New</legend>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <h2>You don't have address yet?</h2>
+
+                            <h3>Enter Password Here:</h3>
+                            <div class="form-group">
+
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" id="password" placeholder="Enter Your Password"
+                                           name="password"/>
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-primary" value="Create New"/>
+                        </div>
+
+                    </div>
+
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</main>

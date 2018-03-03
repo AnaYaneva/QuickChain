@@ -1,0 +1,52 @@
+<main>
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+
+            <form class="form-horizontal" th:action="@{/transaction/create}" method="post">
+                 <fieldset>
+                     <legend>Make a Transaction</legend>
+
+                     <div class="form-group">
+                         <label class="col-sm-4 control-label" for="privateKey">Private Key</label>
+                         <div class="col-sm-4 ">
+                             <input type="text" class="form-control" id="privateKey" placeholder="Enter Your Private Key Here"
+                                    name="privateKey"/>
+                         </div>
+                     </div>
+
+                     <div class="form-group">
+                         <label class="col-sm-4 control-label" for="from">Address</label>
+                         <div class="col-sm-4 ">
+                             <input type="text" class="form-control" id="from" placeholder="Enter Your Address Here"
+                                    name="from"/>
+                         </div>
+                     </div>
+
+                     <div class="form-group">
+                         <label class="col-sm-4 control-label" for="to">Receiver's Address</label>
+                         <div class="col-sm-4 ">
+                             <input type="text" class="form-control" id="to" placeholder="Enter Receiver's Address Here"
+                                    name="to"/>
+                         </div>
+                     </div>
+
+                     <div class="form-group">
+                         <label class="col-sm-4 control-label" for="value">Amount</label>
+                         <div class="col-sm-4 ">
+                             <input type="text" class="form-control" id="value" placeholder="Enter Amount Here"
+                                    name="value"/>
+                         </div>
+                     </div>
+
+                     <div class="form-group">
+                         <div class="col-sm-4 col-sm-offset-4">
+                             <a class="btn btn-default" th:href="@{/}">Cancel</a>
+                             <input type="submit" class="btn btn-primary" value="Proceed"/>
+                         </div>
+                     </div>
+                 </fieldset>
+
+             </form>
+        </div>
+    </div>
+</main>
