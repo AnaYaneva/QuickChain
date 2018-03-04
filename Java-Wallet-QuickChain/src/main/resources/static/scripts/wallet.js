@@ -7,36 +7,84 @@ $(document).ready(function() {
 
     $('#buttonGenerateNewWallet').click(generateNewWallet);
     $('#buttonOpenExistingWallet').click(openExistingWallet);
-    $('#buttonDisplayBalance').click(displayBalance);*/
-    //$('#buttonSignTransaction').click(signTransaction);
-    $('#buttonSendSignedTransaction').click(sendSignedTransaction);
+    $('#buttonDisplayBalance').click(displayBalance);
+    $('#buttonSignTransaction').click(signTransaction);*/
+
+    $('#buttonSendSignedTransaction').click(function () {
+        console.log("jdbassjbsajd")
+    });
     //$('#linkLogout').click(logout);
 
-    // Attach AJAX "loading" event listener
-    $(document).on({
-        ajaxStart: function() { $("#loadingBox").show() },
-        ajaxStop: function() { $("#loadingBox").hide() }
-    });
-
-    function showView(viewName) {
-        // Hide all views and show the selected view only
-        $('main > section').hide();
-        $('#' + viewName).show();
-    }
-
-    function showInfo(message) {
-        $('#infoBox>p').html(message);
-        $('#infoBox').show();
-        $('#infoBox>header').click(function(){ $('#infoBox').hide(); });
-    }
-
-    function showError(errorMsg) {
-        $('#errorBox>p').html("Error: " + errorMsg);
-        $('#errorBox').show();
-        $('#errorBox>header').click(function(){ $('#errorBox').hide(); });
-    }
-
-    function sendSignedTransaction() {
+   //// Attach AJAX "loading" event listener
+   //$(document).on({
+   //    ajaxStart: function() { $("#loadingBox").show() },
+   //    ajaxStop: function() { $("#loadingBox").hide() }
+   //});
+//
+   //function showView(viewName) {
+   //    // Hide all views and show the selected view only
+   //    $('main > section').hide();
+   //    $('#' + viewName).show();
+   //}
+//
+   //function showInfo(message) {
+   //    $('#infoBox>p').html(message);
+   //    $('#infoBox').show();
+   //    $('#infoBox>header').click(function(){ $('#infoBox').hide(); });
+   //}
+//
+   //function showError(errorMsg) {
+   //    $('#errorBox>p').html("Error: " + errorMsg);
+   //    $('#errorBox').show();
+   //    $('#errorBox>header').click(function(){ $('#errorBox').hide(); });
+   //}
+    //$('#buttonSendSignedTransaction').click(sendSignedTransaction);
+    //function sendSignedTransaction() {
+    //
+    //    console.log("jdbassjbsajd")
+    //    //let nodeUrl = $('#textBoxNode').val();
+    //    //let url = nodeUrl + '/transactions/send';
+    //    //let signedTransaction =  $('#signature').val();
+////
+    //    //let from = $('#address').val();
+    //    //console.log(from);
+    //    //let to = $('#rec_address').val();
+    //    //console.log(to);
+    //    //let value = $('#amount').val();
+    //    //let senderPubKey = $('#senderPubKey').val();
+    //    //let senderSignature = signedTransaction.split(',');
+    //    //let dateCreated = $('#dateCreated').val();
+    //    //console.log(dateCreated);
+////
+    //    //let signatureArray = [senderSignature[0], senderSignature[1]];
+    //    //let transaction = {
+    //    //    from:from,
+    //    //    to:to,
+    //    //    value: Number(value),
+    //    //    senderPubKey:senderPubKey,
+    //    //    senderSignature: signatureArray,
+    //    //    dateCreated:dateCreated
+    //    //}
+////
+    //    //jsonRequest = JSON.stringify(transaction);
+////
+    //    //console.log(jsonRequest);
+////
+    //    //$.ajax({
+    //    //    url: url,
+    //    //    method: 'post',
+    //    //    dataType: 'json',
+    //    //    data: jsonRequest,
+    //    //    contentType: "application/json",
+    //    //    success: function(data) {
+    //    //        $('#textareaSendTransactionresult').val(data.responseJSON.transactionHash)
+    //    //    },
+    //    //    error: function(err){
+    //    //        $('#textareaSendTransactionresult').val(err.responseJSON.error)
+    //    //    }
+    //    //})
+    //}
+    /*function sendSignedTransaction() {
         let nodeUrl = $('#textBoxNodeAccountBalance').val()
         let url = nodeUrl + '/transactions/send'
 
@@ -55,7 +103,7 @@ $(document).ready(function() {
                 $('#textareaSendTransactionresult').val(err.responseJSON.error)
             }
         })
-    }
+    }*/
     //function generateNewWallet() {
     //    let ec = new elliptic.ec('secp256k1');
     //    let keyPair = ec.genKeyPair();
@@ -129,42 +177,42 @@ $(document).ready(function() {
 //        //}
 //    }
 //
-//    function sendSignedTransaction() {
-//        let nodeUrl = $('#textBoxNodeAccountBalance').val()
-//        let url = nodeUrl + '/transactions/new'
-//        let signedTransaction =  $('#textareaSignedTransaction').val()
+ //function sendSignedTransaction() {
+ //    let nodeUrl = $('#textBoxNodeAccountBalance').val()
+ //    let url = nodeUrl + '/transactions/new'
+ //    let signedTransaction =  $('#textareaSignedTransaction').val()
 //
-//        let from = $('input[name="senderAddress"]').val()
-//        let to = $('input[name="recipientAddress"]').val()
-//        let value = $('input[name="transferAmount"]').val()
-//        let senderPubKey = sessionStorage['pubKey']
-//        let senderSignature = signedTransaction.split(',')
-//        let dateCreated = "2018-02-01T23:23:56.337Z"
+ //    let from = $('input[name="senderAddress"]').val()
+ //    let to = $('input[name="recipientAddress"]').val()
+ //    let value = $('input[name="transferAmount"]').val()
+ //    let senderPubKey = sessionStorage['pubKey']
+ //    let senderSignature = signedTransaction.split(',')
+ //    let dateCreated = "2018-02-01T23:23:56.337Z"
 //
-//        let signatureArray = [senderSignature[0], senderSignature[1]]
-//        let transaction = {
-//            from:from,
-//            to:to,
-//            value: Number(value),
-//            senderPubKey:senderPubKey,
-//            senderSignature: signatureArray,
-//            dateCreated:dateCreated
-//        }
+ //    let signatureArray = [senderSignature[0], senderSignature[1]]
+ //    let transaction = {
+ //        from:from,
+ //        to:to,
+ //        value: Number(value),
+ //        senderPubKey:senderPubKey,
+ //        senderSignature: signatureArray,
+ //        dateCreated:dateCreated
+ //    }
 //
-//        jsonRequest = JSON.stringify(transaction)
+ //    jsonRequest = JSON.stringify(transaction)
 //
-//        $.ajax({
-//            url: url,
-//            method: 'post',
-//            dataType: 'json',
-//            data: jsonRequest,
-//            contentType: "application/json",
-//            success: function(data) {
-//                $('#textareaSendTransactionresult').val(data.responseJSON.transactionHash)
-//            },
-//            error: function(err){
-//                $('#textareaSendTransactionresult').val(err.responseJSON.error)
-//            }
-//        })
-//    }
+ //    $.ajax({
+ //        url: url,
+ //        method: 'post',
+ //        dataType: 'json',
+ //        data: jsonRequest,
+ //        contentType: "application/json",
+ //        success: function(data) {
+ //            $('#textareaSendTransactionresult').val(data.responseJSON.transactionHash)
+ //        },
+ //        error: function(err){
+ //            $('#textareaSendTransactionresult').val(err.responseJSON.error)
+ //        }
+ //    })
+ //}
 });

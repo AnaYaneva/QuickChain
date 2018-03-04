@@ -1,7 +1,7 @@
 <main>
     <div class="container body-content span=8 offset=2">
         <div class="well">
-            <form class="form-horizontal" th:action="@{/transaction/details}" method="POST">
+            <form class="form-horizontal" th:action="@{/transaction/signed}" method="POST">
                 <fieldset>
                     <legend>Make a Transaction</legend>
 
@@ -42,25 +42,33 @@
                         </div>
                     </div>
 
+                    <p id="senderPubKey" th:text="${transaction.senderPubKey}" style="display: none"></p>
                     <p id="jsonString" th:text="${jsonString}" style="display: none"></p>
+                    <p id="dateCreated" th:text="${transaction.dateCreated}" style="display: none"></p>
 
                     <div class="form-group">
-                        <label class="col-sm-4 control-label" for="textBoxNodeAccountBalance">Node Url</label>
+                        <label class="col-sm-4 control-label" for="textBoxNode">Node Url</label>
                         <div class="col-sm-4 ">
-                            <input type="text" class="form-control" id="textBoxNodeAccountBalance" value="http://192.168.0.3:5555"
-                                   name="nodeUrl"/>
+                            <input type="text"  class="form-control" id="textBoxNode" value="http://192.168.164.22:5555"
+                                   name="textBoxNode"/>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-4">
                             <a class="btn btn-default" th:href="@{/transaction/create}">Back</a>
-                            <input type="button" id="buttonSendSignedTransaction" class="btn btn-primary" value="Send Transaction"/>
+                            <input type="submit" id="buttonSendSignedTransaction" class="btn btn-primary"
+                                   value="Send Transaction"/>
+                            <input type="button" id="send" class="btn btn-primary"
+                                   value="Send"/>
                         </div>
                     </div>
 
-                    <div class="col-md-12">
-                        <textarea class="form-control" rows="6" id="textareaSendTransactionresult" name="sendTransactionresult"></textarea>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <textarea class="form-control" rows="6" id="textareaSendTransactionresult"
+                                      name="sendTransactionresult"></textarea>
+                        </div>
                     </div>
                 </fieldset>
             </form>
@@ -106,11 +114,29 @@ function signTransaction() {
     } -->
 
 <!--  $('#buttonSendSignedTransaction').click(sendSignedTransaction);
-function sendSignedTransaction() {
-        let nodeUrl = $('#textBoxNodeAccountBalance').val()
+    function sendSignedTransaction() {
+        let nodeUrl = $('#textBoxNode').val()
         let url = nodeUrl + '/transactions/send'
+        let signedTransaction =  $('#signature').val()
 
-        jsonRequest = $('#jsonString').val()
+        let from = $('#address).val()
+        let to = $('#rec_address').val()
+        let value = $('#amount').val()
+        let senderPubKey = $('#senderPubKey').val()
+        let senderSignature = signedTransaction.split(',')
+        let dateCreated = $('#dateCreated').val()
+
+        let signatureArray = [senderSignature[0], senderSignature[1]]
+        let transaction = {
+            from:from,
+            to:to,
+            value: Number(value),
+            senderPubKey:senderPubKey,
+            senderSignature: signatureArray,
+            dateCreated:dateCreated
+        }
+
+        jsonRequest = JSON.stringify(transaction)
 
         $.ajax({
             url: url,
@@ -125,4 +151,5 @@ function sendSignedTransaction() {
                 $('#textareaSendTransactionresult').val(err.responseJSON.error)
             }
         })
-    }-->
+    }
+-->

@@ -1,11 +1,16 @@
-@using QuickChain.Model
-@model Block
+@using Newtonsoft.Json.Linq
+
+@model QuickChain.Model.Block
 
 <h2>Block: @Model.Height</h2>
 <div class="container">
-    <p>Hash: @Model.Hash</p>
-    <p>Parent Hash: @Model.ParentHash</p>
-    <p>Size: @Model.Size bytes</p>
-    <p>Time: @Model.TimeStamp</p>
-    <p>Transactions: <a asp-area="" asp-controller="Blocks" asp-action="Transactions" asp-route-id="@Model.Height">@Model.Transactions.Count</a></p>
+    <p><strong>Hash:</strong> @Model.Hash</p>
+    <p><strong>Parent Hash:</strong> @Model.ParentHash</p>
+    <p><strong>Size:</strong> @Model.Size bytes</p>
+    <p><strong>Time:</strong> @Model.TimeStamp</p>
+    <p><strong>Transactions:</strong> <a asp-area="" asp-controller="Blocks" asp-action="Transactions" asp-route-id="@Model.Height">@Model.Transactions.Count</a></p>
+    @{
+        JObject json = JObject.Parse(Model.ToString());
+    }
+    <pre id="json">@json</pre>
 </div>

@@ -1,6 +1,6 @@
-@using QuickChain.Model
+﻿@using QuickChain.Model
 @model List<Transaction>
-<h2>Transactions</h2>
+<h2>Pending Transactions</h2>
 
 <div class="limiter">
     <div class="container-table100">
@@ -27,7 +27,7 @@
                             {
                                 var tr = Model[i];
                                 <tr>
-                                    <td class="column1"><a asp-area="" asp-controller="Blocks" asp-action="Transaction" asp-route-id="@tr.TxHash">@tr.TxHash</a></td>
+                                    <td class="column1"><a asp-area="" asp-controller="Blocks" asp-action="PendingTransaction" asp-route-id="@tr.TxHash">@tr.TxHash</a></td>
                                     <td class="column2">@tr.From</td>
                                     <td class="column3">@tr.To</td>
                                     <td class="column4">@tr.UsedGas</td>
@@ -37,9 +37,9 @@
                         </tbody>
                     </table>
                     @*<div class="ps__rail-y" style="top: 0px; height: 585px; right: 5px;">
-                        <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 293px;">
-                        </div>
-                    </div>*@
+                            <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 293px;">
+                            </div>
+                        </div>*@
                 </div>
             </div>
         </div>

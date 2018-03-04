@@ -2,6 +2,13 @@ package wallet.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.CloseableHttpResponse;
+
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +23,7 @@ import wallet.service.crypto.Json;
 import wallet.service.crypto.Secp256k1;
 
 import javax.xml.bind.DatatypeConverter;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 
@@ -31,6 +39,8 @@ public class TransactionController {
     private String message;
 
     private String transactionSignature;
+
+    private String jsonString;
 
     @Autowired
     private AddressService addressService;
@@ -85,7 +95,7 @@ public class TransactionController {
         signature[0]=this.addressService.getStringFromBytes(signed[0]);
         signature[1]=this.addressService.getStringFromBytes(signed[1]);
 
-        transactionSignature=signature[0]+","+signature[1];
+        transactionSignature=signature[0]+",\n"+signature[1];
 
        return "redirect:/transaction/details";
     }
@@ -100,7 +110,7 @@ public class TransactionController {
     }
 
     @PostMapping("/transaction/details")
-    public String send(TransactionBindingModel transactionBindingModel) {
+    public String sign(TransactionBindingModel transactionBindingModel) {
 
 
         return "redirect:/transaction/signed";
@@ -115,7 +125,7 @@ public class TransactionController {
         transactionToSend.setSenderPubKey(transactionUnsigned.getSenderPubKey());
         transactionToSend.setValue(transactionUnsigned.getValue());
 
-        transactionToSend.setSenderSignature(transactionSignature.split(","));
+        transactionToSend.setSenderSignature(transactionSignature.split(",\n"));
 
         String jsonString = mapper.writeValueAsString(transactionToSend);
         System.out.println(jsonString);
@@ -127,6 +137,13 @@ public class TransactionController {
         return "base-layout";
     }
 
+    @PostMapping("/transaction/signed")
+    public String send(TransactionBindingModel transactionBindingModel) throws IOException {
+
+        postJson(jsonString);
+        return "redirect:/transaction/send";
+    }
+
     @GetMapping("/transaction/send")
     public String sendMessage(Model model) {
 
@@ -136,7 +153,21 @@ public class TransactionController {
     }
 
 
+    public void postJson(String json)
+            throws ClientProtocolException, IOException {
+        CloseableHttpClient client = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost("http://192.168.164.22:5555/transaction/send");
 
+
+        StringEntity entity = new StringEntity(json);
+        httpPost.setEntity(entity);
+        httpPost.setHeader("Accept", "application/json");
+        httpPost.setHeader("Content-type", "application/json");
+
+        CloseableHttpResponse response = client.execute(httpPost);
+        //assertThat(response.getStatusLine().getStatusCode(), equalTo(200));
+        client.close();
+    }
 
 
 }
