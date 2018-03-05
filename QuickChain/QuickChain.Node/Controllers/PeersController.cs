@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using QuickChain.Data;
+using QuickChain.Model;
 using QuickChain.Node.Model;
 using System;
 using System.Collections.Generic;
@@ -10,16 +12,30 @@ namespace QuickChain.Node.Controllers
     [Route("[controller]")]
     public class PeersController : Controller
     {
-        [HttpGet()]
-        public IEnumerable<Peer> GetAll()
+        private readonly IRepository<Peer> peersRespository;
+
+        public PeersController(IRepository<Peer> peersRespository)
         {
-            return new Peer[] { };
+            this.peersRespository = peersRespository;
+        }
+
+        [HttpGet()]
+        public IEnumerable<PeerModel> GetAll()
+        {
+            long currentBlock = 1000; // TODO: implement blocks
+
+            return this.peersRespository
+                .GetAll()
+                .Select(p => new PeerModel() { Url = p.Url, MinedBlocksSinceConnected = currentBlock - p.ConnectedOnBlock });
         }
 
         [HttpPost()]
-        public Peer Create(Peer peer)
+        public PeerModel Create(string peerUrl)
         {
-            return new Peer() { };
+            Peer dbPeer = this.peersRespository.Insert(new Peer() { Url = peerUrl });
+            this.peersRespository.Save();
+
+            return new PeerModel() { Url = peerUrl, MinedBlocksSinceConnected = 0 };
         }
     }
 }

@@ -10,10 +10,15 @@ namespace QuickChain.Data
     {
         public DbSet<Block> Blocks { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Peer> Peers { get; set; }
 
         public QuickChainDbContext(DbContextOptions options) : base(options)
         {
 
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
         }
     }
 }

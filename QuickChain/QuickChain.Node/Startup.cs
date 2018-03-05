@@ -26,7 +26,7 @@ namespace QuickChain.Node
             Configuration = builder.Build();
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -46,6 +46,7 @@ namespace QuickChain.Node
             // Add application services.
             AddRepository<Transaction>(services);
             AddRepository<Block>(services);
+            AddRepository<Peer>(services);
         }
 
         private static void AddRepository<T>(IServiceCollection services) where T : Entity
@@ -80,7 +81,7 @@ namespace QuickChain.Node
             using (var serviceScope = serviceScopeFactory.CreateScope())
             {
                 var dbContext = serviceScope.ServiceProvider.GetService<T>();
-                dbContext.Database.Migrate();
+                dbContext.Database.EnsureCreated();
             }
         }
     }

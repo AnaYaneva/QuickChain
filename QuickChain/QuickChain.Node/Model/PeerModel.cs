@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace QuickChain.Node.Model
 {
-    public class Peer
+    public class PeerModel
     {
         public string Url { get; set; }
         public long MinedBlocksSinceConnected { get; set; }
