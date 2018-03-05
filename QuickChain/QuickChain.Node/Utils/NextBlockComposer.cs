@@ -14,6 +14,7 @@ namespace QuickChain.Node.Utils
 
         public bool IsValidBlock(Block block)
         {
+            return true;
         }
 
         public void RemoveTransactionFromNextBlock(SignedTransaction transaction)
