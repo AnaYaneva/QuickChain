@@ -12,7 +12,7 @@ namespace QuickChain.Web.Controllers
 
         public IActionResult Index()
         {
-            var transaction = new Transaction();
+            var transaction = new SignedTransaction();
             transaction.BlockHeight = 1;
             transaction.From = "ME";
             transaction.To = "YOU";

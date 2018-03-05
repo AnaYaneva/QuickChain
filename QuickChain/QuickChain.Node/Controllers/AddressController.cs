@@ -12,10 +12,10 @@ namespace QuickChain.Node.Controllers
     [Route("[controller]")]
     public class AddressController : Controller
     {
-        private readonly IRepository<Transaction> transactionsRepository;
+        private readonly IRepository<SignedTransaction> transactionsRepository;
         private readonly IRepository<Block> blocksRepository;
 
-        public AddressController(IRepository<Transaction> transactionsRepository, IRepository<Block> blocksRepository)
+        public AddressController(IRepository<SignedTransaction> transactionsRepository, IRepository<Block> blocksRepository)
         {
             this.transactionsRepository = transactionsRepository;
             this.blocksRepository = blocksRepository;

@@ -11,6 +11,7 @@ using QuickChain.Data;
 using QuickChain.Model;
 using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Swagger;
+using QuickChain.Node.Utils;
 
 namespace QuickChain.Node
 {
@@ -44,7 +45,10 @@ namespace QuickChain.Node
             services.AddDistributedMemoryCache();
 
             // Add application services.
-            AddRepository<Transaction>(services);
+            services.AddTransient<IHashLibrary, HashLibrary>();
+            services.AddTransient<INextBlockComposer, NextBlockComposer>();
+
+            AddRepository<SignedTransaction>(services);
             AddRepository<Block>(services);
             AddRepository<Peer>(services);
         }

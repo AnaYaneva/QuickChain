@@ -2,9 +2,12 @@
 using QuickChain.Data;
 using QuickChain.Model;
 using QuickChain.Node.Model;
+using QuickChain.Node.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace QuickChain.Node.Controllers
@@ -12,27 +15,31 @@ namespace QuickChain.Node.Controllers
     [Route("[controller]")]
     public class TransactionsController : Controller
     {
-        private readonly IRepository<Transaction> transactionsRepository;
+        private readonly IRepository<SignedTransaction> transactionsRepository;
+        private readonly IHashLibrary hashLibrary;
+        private readonly INextBlockComposer nextBlockComposer;
 
-        public TransactionsController(IRepository<Transaction> transactionsRepository)
+        public TransactionsController(IRepository<SignedTransaction> transactionsRepository, IHashLibrary hashLibrary, INextBlockComposer nextBlockComposer)
         {
             this.transactionsRepository = transactionsRepository;
+            this.hashLibrary = hashLibrary;
+            this.nextBlockComposer = nextBlockComposer;
         }
 
         [HttpGet]
-        public IEnumerable<Transaction> GetAll(bool? onlyConfirmed, bool? onlyPending, int? page, int? perPage, string address = null)
+        public IEnumerable<SignedTransaction> GetAll(bool? onlyConfirmed, bool? onlyPending, int? page, int? perPage, string address = null)
         {
-            IQueryable<Transaction> allTransactions = transactionsRepository.GetAll(false);
+            IQueryable<SignedTransaction> allTransactions = transactionsRepository.GetAll(false);
 
             if (address != null)
             {
                 allTransactions = allTransactions.Where(t => t.From == address || t.To == address);
             }
-            if(onlyConfirmed == true)
+            if (onlyConfirmed == true)
             {
                 allTransactions = allTransactions.Where(t => t.BlockHeight >= 0);
             }
-            if(onlyPending == true)
+            if (onlyPending == true)
             {
                 allTransactions = allTransactions.Where(t => t.BlockHeight < 0);
             }
@@ -42,15 +49,29 @@ namespace QuickChain.Node.Controllers
         }
 
         [HttpGet("{hash}")]
-        public Transaction Get(string hash)
+        public SignedTransaction Get(string hash)
         {
             return this.transactionsRepository.GetAll().Single(t => t.TxHash == hash);
         }
 
         [HttpPost()]
-        public Transaction Create([FromBody]Transaction transaction)
+        public SignedTransaction Create([FromBody]TransactionModel transaction)
         {
-            Transaction dbTransaction = this.transactionsRepository.Insert(transaction);
+            decimal fee = 10; // todo - implement fee
+            var newTransaction = new SignedTransaction()
+            {
+                BlockHeight = -1000,
+                CreatedOn = DateTime.UtcNow,
+                TransactionIdentifier = Guid.NewGuid(),
+                Fee = fee,
+                Value = transaction.Value,
+                From = transaction.From,
+                To = transaction.To,
+                SenderPublicKey = transaction.SenderPublicKey,
+            };
+            newTransaction.TxHash = this.hashLibrary.GetHash(newTransaction);
+
+            SignedTransaction dbTransaction = this.transactionsRepository.Insert(newTransaction);
             this.transactionsRepository.Save();
 
             return dbTransaction;
@@ -58,15 +79,32 @@ namespace QuickChain.Node.Controllers
         }
 
         [HttpPost("{hash}/sign")]
-        public Transaction Sign(string hash, [FromBody]Signature signature)
+        public SignedTransaction Sign(string hash, [FromBody]string signatureR, [FromBody]string signatureS)
         {
-            return new Transaction();
+            SignedTransaction transaction = this.transactionsRepository.GetAll().Single(t => t.TxHash == hash);
+
+            if (!this.hashLibrary.IsValidSignature(transaction, signatureR, signatureS))
+            {
+                throw new UnauthorizedAccessException("not valid signature");
+            }
+
+            this.transactionsRepository.Attach(transaction);
+            transaction.SignatureR = signatureR;
+            transaction.SignatureS = signatureS;
+            transaction.LastEditedOn = DateTime.UtcNow;
+            this.transactionsRepository.Save();
+
+            return transaction;
         }
 
         [HttpPost("{hash}/send")]
-        public Transaction Send(string hash)
+        public string Send(string hash)
         {
-            return new Transaction();
+            SignedTransaction transaction = this.transactionsRepository.GetAll().Single(t => t.TxHash == hash);
+
+            this.nextBlockComposer.AddTransactionToNextBlock(transaction);
+
+            return "The transaction has been included in the transaction pool! Wait for the transaction to be mined!";
         }
     }
 }

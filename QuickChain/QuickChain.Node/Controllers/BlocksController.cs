@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using QuickChain.Data;
 using QuickChain.Model;
+using QuickChain.Node.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,14 @@ namespace QuickChain.Node.Controllers
     public class BlocksController : Controller
     {
         private readonly IRepository<Block> blockRepository;
+        private readonly INextBlockComposer nextBlockComposer;
+        private readonly IRepository<SignedTransaction> transactionsRepository;
 
-        public BlocksController(IRepository<Block> blockRepository)
+        public BlocksController(IRepository<Block> blockRepository, INextBlockComposer nextBlockComposer, IRepository<SignedTransaction> transactionsRepository)
         {
             this.blockRepository = blockRepository;
+            this.nextBlockComposer = nextBlockComposer;
+            this.transactionsRepository = transactionsRepository;
         }
 
         [HttpGet]
@@ -24,7 +29,7 @@ namespace QuickChain.Node.Controllers
 
             return this.blockRepository
                 .GetAll(false)
-                .Skip(((page ?? 1) - 1)*(perPage ?? 20))
+                .Skip(((page ?? 1) - 1) * (perPage ?? 20))
                 .Take(perPage ?? 20);
         }
 
@@ -36,12 +41,33 @@ namespace QuickChain.Node.Controllers
         }
 
         [HttpPost()]
-        public Block Create([FromBody]Block block)
+        public string Create([FromBody]Block[] blocks)
         {
-            Block dbBlock = this.blockRepository.Insert(block);
+            // TODO: check chain complexity
+
+            foreach (Block block in blocks)
+            {
+                if (!this.nextBlockComposer.IsValidBlock(block))
+                {
+                    // TODO: remove originator from peers;
+                    throw new UnauthorizedAccessException("invalid block");
+                }
+            }
+
+            foreach (Block block in blocks)
+            {
+                Block dbBlock = this.blockRepository.Insert(block);
+                foreach(SignedTransaction transaction in dbBlock.Transactions)
+                {
+                    this.transactionsRepository.Insert(transaction);
+                    this.nextBlockComposer.RemoveTransactionFromNextBlock(transaction);
+                }
+            }
+
+            this.transactionsRepository.Save();
             this.blockRepository.Save();
 
-            return dbBlock;
+            return "Blocks successfully added!";
         }
     }
 }
