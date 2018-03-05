@@ -7,7 +7,7 @@ namespace QuickChain.Node.Model
 {
     public class BalanceInfo
     {
-        public long Balance { get; set; }
+        public decimal Balance { get; set; }
         public int Confirmations { get; set; }
     }
 }

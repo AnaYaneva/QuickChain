@@ -11,7 +11,7 @@ namespace QuickChain.Node.Controllers
     [Route("[controller]")]
     public class BlocksController : Controller
     {
-        private IRepository<Block> blockRepository;
+        private readonly IRepository<Block> blockRepository;
 
         public BlocksController(IRepository<Block> blockRepository)
         {

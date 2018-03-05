@@ -13,20 +13,27 @@ namespace QuickChain.Node.Controllers
     public class PeersController : Controller
     {
         private readonly IRepository<Peer> peersRespository;
+        private readonly IRepository<Block> blocksRepository;
 
-        public PeersController(IRepository<Peer> peersRespository)
+        public PeersController(IRepository<Peer> peersRespository, IRepository<Block> blocksRepository)
         {
             this.peersRespository = peersRespository;
+            this.blocksRepository = blocksRepository;
         }
 
         [HttpGet()]
         public IEnumerable<PeerModel> GetAll()
         {
-            long currentBlock = 1000; // TODO: implement blocks
+            long currentBlock = this.blocksRepository.GetAll(false).Last().Height;
 
             return this.peersRespository
                 .GetAll()
-                .Select(p => new PeerModel() { Url = p.Url, MinedBlocksSinceConnected = currentBlock - p.ConnectedOnBlock });
+                .Select(p => new PeerModel()
+                    {
+                        Url = p.Url,
+                        MinedBlocksSinceConnected = currentBlock - p.ConnectedOnBlock
+                    }
+                );
         }
 
         [HttpPost()]
@@ -35,7 +42,11 @@ namespace QuickChain.Node.Controllers
             Peer dbPeer = this.peersRespository.Insert(new Peer() { Url = peerUrl });
             this.peersRespository.Save();
 
-            return new PeerModel() { Url = peerUrl, MinedBlocksSinceConnected = 0 };
+            return new PeerModel()
+            {
+                Url = peerUrl,
+                MinedBlocksSinceConnected = 0
+            };
         }
     }
 }
