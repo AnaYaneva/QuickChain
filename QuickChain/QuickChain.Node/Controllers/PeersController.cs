@@ -30,7 +30,7 @@ namespace QuickChain.Node.Controllers
         }
 
         [HttpPost()]
-        public PeerModel Create(string peerUrl)
+        public PeerModel Create([FromBody]string peerUrl)
         {
             Peer dbPeer = this.peersRespository.Insert(new Peer() { Url = peerUrl });
             this.peersRespository.Save();
