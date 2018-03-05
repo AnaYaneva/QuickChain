@@ -14,3 +14,5 @@
 /.vs
 /QuickChain/.vs/
 *.user
+/QuickChain/QuickChain.Data/bin
+/QuickChain/QuickChain.Data/obj

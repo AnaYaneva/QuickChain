@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickChain.Web", "QuickChain.Web\QuickChain.Web.csproj", "{0966DC0E-F7F8-4F6C-9880-9CA88049ED46}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickChain.Model", "QuickChain.Model\QuickChain.Model.csproj", "{3FA77C2D-39FB-4D63-8C11-7B8E6333E15F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickChain.Node", "QuickChain.Node\QuickChain.Node.csproj", "{6BDDEF61-0A6B-42A6-B9D7-1C6A215FEA26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickChain.Data", "QuickChain.Data\QuickChain.Data.csproj", "{1334101F-95AC-41CA-A6CC-2D8F4B86253A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{6BDDEF61-0A6B-42A6-B9D7-1C6A215FEA26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BDDEF61-0A6B-42A6-B9D7-1C6A215FEA26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BDDEF61-0A6B-42A6-B9D7-1C6A215FEA26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1334101F-95AC-41CA-A6CC-2D8F4B86253A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1334101F-95AC-41CA-A6CC-2D8F4B86253A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1334101F-95AC-41CA-A6CC-2D8F4B86253A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1334101F-95AC-41CA-A6CC-2D8F4B86253A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

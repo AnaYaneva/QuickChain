@@ -4,7 +4,7 @@ using System.Text;
 
 namespace QuickChain.Model
 {
-    public class Transaction
+    public class Transaction : Entity
     {
         public string TxHash { get; set; }
         public int BlockHeight { get; set; }
