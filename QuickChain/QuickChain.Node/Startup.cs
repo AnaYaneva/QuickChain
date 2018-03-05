@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using QuickChain.Data;
 using QuickChain.Model;
 using Microsoft.EntityFrameworkCore;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace QuickChain.Node
 {
@@ -35,7 +36,10 @@ namespace QuickChain.Node
 
             services.AddMvc();
 
-
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "QuickChain Node", Version = "v1" });
+            });
 
             services.AddDistributedMemoryCache();
 
@@ -55,6 +59,14 @@ namespace QuickChain.Node
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "QuickChain Node v1");
+            });
 
             app.UseDeveloperExceptionPage();
             app.UseMvc();
