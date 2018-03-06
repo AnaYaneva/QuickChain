@@ -1,5 +1,7 @@
 ﻿namespace QuickChain.Miner
 {
+    using System;
+    using System.Diagnostics;
     using System.Security.Cryptography;
     using System.Text;
 
@@ -9,7 +11,14 @@
 
         static void Main(string[] args)
         {
+            Stopwatch timer = new Stopwatch();
+            TimeSpan maxBlockTime = new TimeSpan(0, 0, 5);
 
+            while (true)
+            {
+                timer.Start();
+
+            }
         }
 
         public static byte[] Sha256(byte[] array)
