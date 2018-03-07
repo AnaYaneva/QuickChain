@@ -1,0 +1,18 @@
+@using QuickChain.Model;
+@model List<Block>
+<h2>Blocks</h2>
+<div>
+    <table id="blocks">
+        @for (int i = Model.Count - 1; i >= 0; i--)
+        {
+            var block = Model[i];
+            <tr>
+                <td> Block number: <a asp-area="" asp-controller="Blocks" asp-action="Block" asp-route-id="@block.Height">@block.Height</a></td>
+                <td> Transactions: <a asp-area="" asp-controller="Blocks" asp-action="Transactions" asp-route-id="@block.Height">@block.Transactions.Count</a></td>
+                <td> Time: @block.TimeStamp.Date</td>
+            </tr>
+
+        }
+    </table>
+</div>
+<script src="/js/wallet.js"></script>
