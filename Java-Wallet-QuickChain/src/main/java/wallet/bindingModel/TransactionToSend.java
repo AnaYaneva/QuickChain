@@ -2,7 +2,11 @@ package wallet.bindingModel;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.Id;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Min;
 import java.util.Date;
 
@@ -14,28 +18,39 @@ public class TransactionToSend {
     @JsonProperty(value = "to")
     private String to;
 
-    @JsonProperty(value = "senderPubKey")
-    private String senderPubKey;
-
     @JsonProperty(value = "value")
     @Min(0)
     private long value;
 
+    @JsonProperty(value = "senderPubKey")
+    private String senderPubKey;
+
+    @JsonProperty(value = "transactionIdentifier")
+    //@Id
+    //@GeneratedValue(generator = "uuid")
+    //@GenericGenerator(name = "uuid", strategy = "uuid")
+    private String transactionIdentifier;
+
     @JsonProperty(value = "fee")
     private long fee;
 
-    @JsonProperty(value = "dateCreated")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ")
-    private Date dateCreated;
+   // @JsonProperty(value = "dateCreated")
+   // @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ")
+   // private Date dateCreated;
 
-    @JsonProperty(value = "senderSignature")
-    private String[] senderSignature;
+    @JsonProperty(value = "signatureR")
+    private String signatureR;
 
+    @JsonProperty(value = "signatureS")
+    private String signatureS;
+
+    @JsonProperty(value = "transactionHash")
+    private String transactionHash;
 
     public TransactionToSend() {
-        this.senderSignature=new String[2];
-        this.dateCreated=new Date();
-        this.fee=20L;
+        //this.senderSignature=new String[2];
+        //this.dateCreated=new Date();
+        this.fee=0L;
     }
 
     public String getFrom() {
@@ -62,22 +77,6 @@ public class TransactionToSend {
         this.value = value;
     }
 
-    public long getFee() {
-        return this.fee;
-    }
-
-    public void setFee(long fee) {
-        this.fee = fee;
-    }
-
-    public Date getDateCreated() {
-        return this.dateCreated;
-    }
-
-    public void setDateCreated(Date dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
     public String getSenderPubKey() {
         return this.senderPubKey;
     }
@@ -86,12 +85,43 @@ public class TransactionToSend {
         this.senderPubKey = senderPubKey;
     }
 
-    public String[] getSenderSignature() {
-        return this.senderSignature;
+    public String getTransactionIdentifier() {
+        return this.transactionIdentifier;
     }
 
-    public void setSenderSignature(String[] senderSignature) {
-        this.senderSignature = senderSignature;
+    public void setTransactionIdentifier(String transactionIdentifier) {
+        this.transactionIdentifier = transactionIdentifier;
     }
 
+    public long getFee() {
+        return this.fee;
+    }
+
+    public void setFee(long fee) {
+        this.fee = fee;
+    }
+
+    public String getSignatureR() {
+        return this.signatureR;
+    }
+
+    public void setSignatureR(String signatureR) {
+        this.signatureR = signatureR;
+    }
+
+    public String getSignatureS() {
+        return this.signatureS;
+    }
+
+    public void setSignatureS(String signatureS) {
+        this.signatureS = signatureS;
+    }
+
+    public String getTransactionHash() {
+        return this.transactionHash;
+    }
+
+    public void setTransactionHash(String transactionHash) {
+        this.transactionHash = transactionHash;
+    }
 }

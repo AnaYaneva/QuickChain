@@ -1,31 +1,34 @@
-$(document).ready(function() {
+//$(document).ready(function() {
+function startApp(){
     $('#send').click(function send() {
-        let nodeUrl = $('#textBoxNode').val();
-        let url = nodeUrl + '/transactions/send';
-        let signedTransaction =  $('#signature').html();
         let from = $('#address').html();
-
         let to = $('#rec_address').html();
-
         let value = $('#amount').html();
         let senderPubKey = $('#senderPubKey').html();
-        let senderSignature = signedTransaction.split(',');
-        let dateCreated = $('#dateCreated').html();
-
-        let signatureArray = [senderSignature[0], senderSignature[1]];
+        let transactionIdentifier = $('#transactionIdentifier').html();
+        let fee = $('#fee').html();
+        let signatureR = $('#signatureR').html();
+        let signatureS = $('#signatureS').html();
+        let transactionHash = $('#transactionHash').html();
+        console.log(transactionHash);
+        let url = "http://quickchain.azurewebsites.net/api/Transactions/"+transactionHash+"/send";
 
         let transaction = {
             from:from,
             to:to,
             value: Number(value),
             senderPubKey:senderPubKey,
-            senderSignature: signatureArray,
-            dateCreated:dateCreated
+            transactionIdentifier:transactionIdentifier,
+            fee:Number(fee),
+            signatureR: signatureR,
+            signatureS:signatureS,
+            transactionHash:transactionHash
         };
 
         let jsonRequest = JSON.stringify(transaction);
 
         console.log(jsonRequest);
+
         $.ajax({
             url: url,
             method: 'POST',
@@ -34,13 +37,23 @@ $(document).ready(function() {
             contentType: "application/json",
             success: function(data) {
                 //$('#textareaSendTransactionresult').val(data.responseJSON.transactionHash)
-                $('#textareaSendTransactionresult').val("success")
+                $('#textareaSendTransactionresult').val(data.responseJSON.transactionHash)
             },
             error: function(err){
                // $('#textareaSendTransactionresult').val(err.responseJSON.error)
-                $('#textareaSendTransactionresult').val("error")
+                $('#textareaSendTransactionresult').val(err.responseJSON.error)
             }
         })
         //$('#textareaSendTransactionresult').val(url+'\n'+dateCreated)
     });
-});
+
+    $("#buttonGetBalance").click(function(){
+        let addressGetBalance = $("#addressGetBalance").val();
+        console.log(addressGetBalance);
+        let urlBalance="http://quickchain.azurewebsites.net/api/Address/"+addressGetBalance+"/balance";
+        $.getJSON( urlBalance, function( json ) {
+            console.log("JSON Data: " + json.address );
+        });
+
+    });
+};

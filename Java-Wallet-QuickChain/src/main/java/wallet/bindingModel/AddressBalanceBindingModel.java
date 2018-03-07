@@ -1,17 +1,10 @@
-package wallet.entity;
+package wallet.bindingModel;
 
-public class Balance {
+import javax.validation.constraints.NotNull;
 
+public class AddressBalanceBindingModel {
+    @NotNull
     private String address;
-
-    private Long confirmedBalance;
-
-    private Long lastMinedBalance;
-
-    private Long pendingBalance;
-
-    public Balance() {
-    }
 
     public String getAddress() {
         return this.address;
@@ -20,6 +13,4 @@ public class Balance {
     public void setAddress(String address) {
         this.address = address;
     }
-
-
 }

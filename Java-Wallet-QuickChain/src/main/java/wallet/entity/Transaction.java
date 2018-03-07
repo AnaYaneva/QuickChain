@@ -45,7 +45,7 @@ public class Transaction {
         this.senderSignature=new String[2];
         this.transferSuccessful=false;
         this.dateCreated=new Date();
-        this.fee=20L;
+        this.fee=0L;
     }
 
     public String getFrom() {
