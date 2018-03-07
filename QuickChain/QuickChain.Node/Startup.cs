@@ -130,7 +130,7 @@ namespace QuickChain.Node
                 BlockHeight = 1,
                 Fee = 0,
                 IsSuccessful = true,
-                From = "TODO",
+                From = "TODO1",
                 To = "TODO",
                 SenderPublicKey = "TODO",
                 SignatureR = "TODO",
