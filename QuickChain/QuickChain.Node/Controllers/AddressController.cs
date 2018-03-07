@@ -29,7 +29,7 @@ namespace QuickChain.Node.Controllers
             int currentBlockHeight = this.blocksRepository.GetAll(false).Last().Height;
 
             decimal confirmedBalance = this.GetBalanceTo(address, 0, currentBlockHeight - confirmationsNeeded) - this.GetBalanceFrom(address, 0, currentBlockHeight - confirmationsNeeded);
-            decimal lastBalance = this.GetBalanceTo(address, currentBlockHeight - confirmationsNeeded, currentBlockHeight) - this.GetBalanceFrom(address, currentBlockHeight - confirmationsNeeded, currentBlockHeight);
+            decimal lastBalance = this.GetBalanceTo(address, Math.Max(0, currentBlockHeight - confirmationsNeeded), currentBlockHeight) - this.GetBalanceFrom(address, Math.Max(0, currentBlockHeight - confirmationsNeeded), currentBlockHeight);
             decimal pendingBalance = this.GetBalanceTo(address, -10, 0);
 
             var result = new BalanceModel()
