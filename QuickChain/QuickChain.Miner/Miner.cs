@@ -63,7 +63,12 @@
                     }
 
                     nonce++;
-                    
+
+                    if (maxBlockTime < timer.Elapsed)
+                    {
+                        timer.Reset();
+                        break;
+                    }
                 }
             }
         }
