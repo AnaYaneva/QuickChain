@@ -27,22 +27,22 @@ namespace QuickChain.Web.Controllers
 
         public IActionResult Block(int id)
         {
-            Block block = this.blockRepository.GetById(id);
+            Block block = this.blockRepository.GetByIdIncluding(id, b => b.Transactions);
 
             return View(block);
         }
 
-        public IActionResult Transactions(int blockId)
+        public IActionResult Transactions(int id)
         {
-            Block block = this.blockRepository.GetById(blockId);
+            Block block = this.blockRepository.GetByIdIncluding(id, b => b.Transactions);
 
             return View(block.Transactions);
         }
 
-        public IActionResult Transaction(string hash)
+        public IActionResult Transaction(string id)
         {
             SignedTransaction transaction = this.transactionsRepository.GetAll()
-                .FirstOrDefault(t => t.TxHash == hash.ToLower());
+                .FirstOrDefault(t => t.TxHash == id.ToLower());
 
             return View(transaction);
         }

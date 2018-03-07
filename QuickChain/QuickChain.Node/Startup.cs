@@ -51,6 +51,8 @@ namespace QuickChain.Node
             AddRepository<SignedTransaction>(services);
             AddRepository<Block>(services);
             AddRepository<Peer>(services);
+
+
         }
 
         private static void AddRepository<T>(IServiceCollection services) where T : Entity
@@ -84,9 +86,12 @@ namespace QuickChain.Node
             });
 
             this.EnsureMigration<QuickChainDbContext>(app);
+
+            var blockRepo = app.ApplicationServices.GetRequiredService<IRepository<Block>>();
+            this.SeedData(blockRepo);
         }
 
-        public void EnsureMigration<T>(IApplicationBuilder app) where T : DbContext
+        private void EnsureMigration<T>(IApplicationBuilder app) where T : DbContext
         {
             var serviceScopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
             using (var serviceScope = serviceScopeFactory.CreateScope())
@@ -94,6 +99,46 @@ namespace QuickChain.Node
                 var dbContext = serviceScope.ServiceProvider.GetService<T>();
                 dbContext.Database.EnsureCreated();
             }
+        }
+
+        private void SeedData(IRepository<Block> blockRepo)
+        {
+            var genesisBlock = new Block()
+            {
+                Difficulty = 0,
+                Hash = "TODO",
+                ParentHash = "GENESIS",
+                TimeStamp = DateTime.UtcNow,
+                Height = 1,
+                Transactions = new List<SignedTransaction>()
+                {
+                    this.GenerateTransaction(),
+                    this.GenerateTransaction(),
+                    this.GenerateTransaction(),
+                    this.GenerateTransaction(),
+                }
+            };
+
+            blockRepo.Insert(genesisBlock);
+            blockRepo.Save();
+        }
+
+        private SignedTransaction GenerateTransaction()
+        {
+            return new SignedTransaction()
+            {
+                BlockHeight = 1,
+                Fee = 0,
+                IsSuccessful = true,
+                From = "TODO",
+                To = "TODO",
+                SenderPublicKey = "TODO",
+                SignatureR = "TODO",
+                SignatureS = "TODO",
+                TransactionIdentifier = Guid.NewGuid(),
+                TxHash = "todo",
+                Value = 1000,
+            };
         }
     }
 }
