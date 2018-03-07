@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace QuickChain.Node.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class PeersController : Controller
     {
         private readonly IRepository<Peer> peersRespository;

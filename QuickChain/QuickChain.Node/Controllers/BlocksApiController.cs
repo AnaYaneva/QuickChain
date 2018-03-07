@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace QuickChain.Node.Controllers
 {
-    [Route("[controller]")]
-    public class BlocksController : Controller
+    [Route("api/[controller]")]
+    public class BlocksApiController : Controller
     {
         private readonly IRepository<Block> blockRepository;
         private readonly INextBlockComposer nextBlockComposer;
         private readonly IRepository<SignedTransaction> transactionsRepository;
 
-        public BlocksController(IRepository<Block> blockRepository, INextBlockComposer nextBlockComposer, IRepository<SignedTransaction> transactionsRepository)
+        public BlocksApiController(IRepository<Block> blockRepository, INextBlockComposer nextBlockComposer, IRepository<SignedTransaction> transactionsRepository)
         {
             this.blockRepository = blockRepository;
             this.nextBlockComposer = nextBlockComposer;
