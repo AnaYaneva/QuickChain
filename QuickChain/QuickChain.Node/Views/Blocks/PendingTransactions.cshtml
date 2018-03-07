@@ -1,5 +1,5 @@
 ﻿@using QuickChain.Model
-@model List<SignedTransaction>
+@model IEnumerable<SignedTransaction>
 <h2>Pending Transactions</h2>
 
 <div class="limiter">
@@ -23,15 +23,14 @@
                 <div class="table100-body js-pscroll ps ps--active-y">
                     <table>
                         <tbody>
-                            @for (int i = 0; i < Model.Count; i++)
+                            @foreach (SignedTransaction transaction in this.Model)
                             {
-                                var tr = Model[i];
                                 <tr>
-                                    <td class="column1"><a asp-area="" asp-controller="Blocks" asp-action="PendingTransaction" asp-route-id="@tr.TxHash">@tr.TxHash</a></td>
-                                    <td class="column2">@tr.From</td>
-                                    <td class="column3">@tr.To</td>
-                                    <td class="column4">@tr.UsedGas</td>
-                                    <td class="column5">@tr.Value</td>
+                                    <td class="column1"><a asp-area="" asp-controller="Blocks" asp-action="PendingTransaction" asp-route-id="@transaction.TxHash">@transaction.TxHash</a></td>
+                                    <td class="column2">@transaction.From</td>
+                                    <td class="column3">@transaction.To</td>
+                                    <td class="column4">@transaction.UsedGas</td>
+                                    <td class="column5">@transaction.Value</td>
                                 </tr>
                             }
                         </tbody>

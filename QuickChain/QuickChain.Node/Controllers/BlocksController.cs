@@ -2,61 +2,57 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using QuickChain.Data;
 using QuickChain.Model;
 
 namespace QuickChain.Web.Controllers
 {
     public class BlocksController : Controller
     {
-        public static readonly List<Block> list = new List<Block>();
+        private readonly IRepository<Block> blockRepository;
+        private readonly IRepository<SignedTransaction> transactionsRepository;
+
+        public BlocksController(IRepository<Block> blockRepository, IRepository<SignedTransaction> transactionsRepository)
+        {
+            this.blockRepository = blockRepository;
+            this.transactionsRepository = transactionsRepository;
+        }
 
         public IActionResult Index()
         {
-            var transaction = new SignedTransaction();
-            transaction.BlockHeight = 1;
-            transaction.From = "ME";
-            transaction.To = "YOU";
-            transaction.TxHash = "TRANSACTION-HASH";
-            transaction.UsedGas = 10;
-            transaction.Value = 10;
+            IEnumerable<Block> blocks = this.blockRepository.GetAll();
 
-            var block = new Block();
-            block.Height = 1;
-            block.TimeStamp = DateTime.Now;
-            block.Size = 15;
-            block.Hash = "HASH";
-            block.ParentHash = "PARENTHASH";
-            block.Transactions.Add(transaction);
-            list.Add(block);
-
-            return View(list);
+            return View(blocks);
         }
 
         public IActionResult Block(int id)
         {
-            return View(list.FirstOrDefault(b => b.Height == id));
+            Block block = this.blockRepository.GetById(id);
+
+            return View(block);
         }
+
         public IActionResult Transactions(int blockId)
         {
-            return View(list.FirstOrDefault(b => b.Height == 1).Transactions.ToList());
-        }
-        public IActionResult Transaction(string id)
-        {
-            foreach (var block in list)
-            {
-                foreach (var t in block.Transactions)
-                {
-                    if (t.TxHash == id)
-                        return View(t);
-                }
-            }
+            Block block = this.blockRepository.GetById(blockId);
 
-            return View();
+            return View(block.Transactions);
+        }
+
+        public IActionResult Transaction(string hash)
+        {
+            SignedTransaction transaction = this.transactionsRepository.GetAll()
+                .FirstOrDefault(t => t.TxHash == hash.ToLower());
+
+            return View(transaction);
         }
 
         public IActionResult PendingTransactions(List<Transaction> penndingList)
         {
-            return View(penndingList);
+            IEnumerable<SignedTransaction> transactions = this.transactionsRepository.GetAll()
+                .Where(t => t.BlockHeight == 0);
+
+            return View(transactions);
         }
 
         public IActionResult PendingTransaction(string id)
