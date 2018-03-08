@@ -2,7 +2,7 @@
 {
     using Infrastructure;
     using Newtonsoft.Json;
-    using QuickChain.Miner.Models;
+    using QuickChain.Model;
     using System;
     using System.Diagnostics;
     using System.Security.Cryptography;
@@ -23,19 +23,19 @@
 
                 string responseFromNode = MinerToNode.GetRequestToNode();
 
-                BlockTemplate blockTemplate = JsonConvert.DeserializeObject<BlockTemplate>(responseFromNode);
+                MiningJob blockTemplate = JsonConvert.DeserializeObject<MiningJob>(responseFromNode);
                 
                 Console.WriteLine("\nStart new task:");
                 Console.WriteLine($"Index of block to mine: {blockTemplate.Index}");
-                Console.WriteLine($"Expected Reward: {blockTemplate.ExpectedReward}");
-                Console.WriteLine($"TransactionsHash: { blockTemplate.TransactionHash}");
-                Console.WriteLine($"PrevBlockHash: {blockTemplate.PrevBlockHash}");
+                // Console.WriteLine($"Expected Reward: {blockTemplate.ExpectedReward}");
+                Console.WriteLine($"TransactionsHash: { blockTemplate.BlockHash}");
+                // Console.WriteLine($"PrevBlockHash: {blockTemplate.PrevBlockHash}");
                 Console.WriteLine($"Difficulty: {blockTemplate.Difficulty}\n");
 
 
                 bool blockFount = false;
                 long nonce = 0;
-                string precomputedData = blockTemplate.Index + blockTemplate.TransactionHash + blockTemplate.PrevBlockHash;
+                string precomputedData = blockTemplate.Index + blockTemplate.BlockHash;
                 string timestamp = DateTime.UtcNow.ToString("o");
 
                 while (!blockFount && nonce < long.MaxValue)
@@ -93,7 +93,7 @@
             return result.ToString();
         }
 
-        private static bool ProofOfWork(string precomputedData, BlockTemplate blockTemplate, string blockHash, string timestamp, long nonce)
+        private static bool ProofOfWork(string precomputedData, MiningJob blockTemplate, string blockHash, string timestamp, long nonce)
         {
             int sum = 0;
             for (int i = 0; i < blockTemplate.Difficulty; i++)

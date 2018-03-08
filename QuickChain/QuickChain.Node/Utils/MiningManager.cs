@@ -10,14 +10,16 @@ namespace QuickChain.Node.Utils
 {
     public class MiningManager : IMiningManager
     {
-        private const long Difficulty = (1 << 10);
+        private const int Difficulty = (1 << 10);
         private const long MiningDivisions = (1 << 20);
 
         private IDictionary<Guid, MiningJob> miningJobs;
+        private IDictionary<Guid, Block> blockForMiningJob;
         private Block minedBlock;
         private long miningIteration;
 
         private readonly IRepository<Block> blockRepository;
+        private readonly IHashLibrary hashLibrary;
 
         public Block MinedBlock
         {
@@ -27,10 +29,12 @@ namespace QuickChain.Node.Utils
             }
         }
 
-        public MiningManager(IRepository<Block> blockRepository)
+        public MiningManager(IRepository<Block> blockRepository, IHashLibrary hashLibrary)
         {
             this.blockRepository = blockRepository;
+            this.hashLibrary = hashLibrary;
             this.miningJobs = new Dictionary<Guid, MiningJob>();
+            this.blockForMiningJob = new Dictionary<Guid, Block>();
         }
 
         public void Start()
@@ -50,8 +54,8 @@ namespace QuickChain.Node.Utils
             var nextBlock = new Block()
             {
                 Difficulty = Difficulty,
-                Height = prevBlock.Height + 1,
                 TimeStamp = DateTime.UtcNow,
+                Height = prevBlock.Height + 1,
                 ParentHash = prevBlock.Hash,
                 Transactions = new List<SignedTransaction>()
             };
@@ -92,14 +96,29 @@ namespace QuickChain.Node.Utils
             var job = new MiningJob()
             {
                 Id = Guid.NewGuid(),
-                RewardAddress = rewardAddress,
-                Block = this.MinedBlock,
+                Difficulty = Difficulty,
+                Index = this.MinedBlock.Height,
+                BlockHash = this.hashLibrary.GetHash(this.MinedBlock),
                 NounceFrom = MiningDivisions * this.miningIteration,
                 NounceTo = MiningDivisions * (this.miningIteration + 1),
-                Difficulty = Difficulty,
             };
 
             this.miningJobs.Add(job.Id, job);
+
+            // TODO: lock threads
+            var transactions = new List<SignedTransaction>();
+            foreach (SignedTransaction transaction in this.MinedBlock.Transactions)
+            {
+                transactions.Add(transaction);
+            }
+            this.blockForMiningJob.Add(job.Id, new Block()
+            {
+                Difficulty = this.MinedBlock.Difficulty,
+                TimeStamp = this.MinedBlock.TimeStamp,
+                Height = this.MinedBlock.Height,
+                ParentHash = this.MinedBlock.ParentHash,
+                Transactions = transactions,
+            });
 
             this.miningIteration++;
             if (miningIteration > (1 << 60))
@@ -115,12 +134,13 @@ namespace QuickChain.Node.Utils
         {
             // TODO: ValidateBlock
 
-            this.blockRepository.Insert(this.miningJobs[jobId].Block);
+            this.blockRepository.Insert(this.blockForMiningJob[jobId]);
             this.blockRepository.Save();
 
             // TODO: reward miners
 
             this.miningJobs.Clear();
+            this.blockForMiningJob.Clear();
 
             this.RefreshNextBlock();
         }
