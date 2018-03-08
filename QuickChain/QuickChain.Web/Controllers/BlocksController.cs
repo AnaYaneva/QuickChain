@@ -53,8 +53,8 @@ namespace QuickChain.Web.Controllers
 
             return View();
         }
-
-        public IActionResult PendingTransactions(List<Transaction> penndingList)
+        
+        public IActionResult PendingTransactions(List<SignedTransaction> penndingList)
         {
             return View(penndingList);
         }
@@ -62,6 +62,11 @@ namespace QuickChain.Web.Controllers
         public IActionResult PendingTransaction(string id)
         {
             return View(/*PendingList.where id == id*/);
+        }
+
+        public IActionResult Faucet()
+        {
+            return View();
         }
     }
 }

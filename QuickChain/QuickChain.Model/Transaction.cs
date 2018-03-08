@@ -14,7 +14,6 @@ namespace QuickChain.Model
         public decimal Fee { get; set; }
         public Guid TransactionIdentifier { get; set; }
         public string SenderPublicKey { get; set; }
-
         public string Status { get; set; } = "Processing";
         public override string ToString()
         {
