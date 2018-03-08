@@ -55,6 +55,10 @@
 
         public static void PostRequestToNode(string blockHash, string timestamp, long nonce)
         {
+            // TODO - read from config
+            string nodeUrl = "http://quickchain.azurewebsites.net";
+            string address = "SOME-ADDRESS-FROM-THE-Wallet";
+
             JObject obj = JObject.FromObject(new
             {
                 nonce = nonce.ToString(),
@@ -73,8 +77,9 @@
                 {
                     statusCode = HttpStatusCode.RequestTimeout;
 
-                                                        //TODO nodeIP   And                          minerAddres
-                    WebRequest request = WebRequest.Create("nodeIpAddress" + "/mining/get-block/" + "minerAddress");
+                    //TODO nodeIP   And                          minerAddres
+                    string requestUrl = string.Format("{0}/api/MiningJobs/request/{1}", nodeUrl, address);
+                    WebRequest request = WebRequest.Create(requestUrl);
                     request.Method = "POST";
                     request.Timeout = 3000;
                     request.ContentType = "application/json; charset=utf-8";
