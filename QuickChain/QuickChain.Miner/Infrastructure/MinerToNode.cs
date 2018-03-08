@@ -55,9 +55,15 @@
 
         public static void PostRequestToNode(string blockHash, string timestamp, long nonce)
         {
+           // var nodeUrltest = Config["Miner: nodeUrl"];
+
             // TODO - read from config
-            string nodeUrl = "http://quickchain.azurewebsites.net";
-            string address = "SOME-ADDRESS-FROM-THE-Wallet";
+           // string nodeUrl = "http://quickchain.azurewebsites.net";
+           // string address = "SOME-ADDRESS-FROM-THE-Wallet";
+
+            Config.Conf();
+            var nodeUrl = Config.Configuration["nodeUrl"];
+            var address = Config.Configuration["address"];
 
             JObject obj = JObject.FromObject(new
             {
