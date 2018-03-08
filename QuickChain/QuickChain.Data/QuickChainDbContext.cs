@@ -19,6 +19,7 @@ namespace QuickChain.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // TODO
         }
     }
 }

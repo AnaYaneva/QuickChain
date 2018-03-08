@@ -27,6 +27,12 @@ namespace QuickChain.Node.Utils
             }
         }
 
+        public string GetHash(Block block)
+        {
+            return "TODO";
+            
+        }
+
         public bool IsValidSignature(TransactionModel transaction, string r, string s)
         {
             // TODO: implement

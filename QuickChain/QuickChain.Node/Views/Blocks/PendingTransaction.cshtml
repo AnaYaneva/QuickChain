@@ -3,14 +3,12 @@
 
 @model SignedTransaction
 
-<h2>Transaction: @Model.TxHash</h2>
+<h2>Transaction: @Model.TransactionHash</h2>
 
 <p>From: @Model.From</p>
 <p>To: @Model.To</p>
 <p>Value: @Model.Value ETH</p>
-<p>Used gas: @Model.UsedGas ETH</p>
 <p>Fee: @Model.Fee ETH</p>
-<p>Status: @Model.Status</p>
 @{
     JObject json = JObject.Parse(Model.ToString());
 }

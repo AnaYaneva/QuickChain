@@ -6,7 +6,6 @@
 <div class="container">
     <p><strong>Hash:</strong> @Model.Hash</p>
     <p><strong>Parent Hash:</strong> @Model.ParentHash</p>
-    <p><strong>Size:</strong> @Model.Size bytes</p>
     <p><strong>Time:</strong> @Model.TimeStamp</p>
     <p><strong>Transactions:</strong> <a asp-area="" asp-controller="Blocks" asp-action="Transactions" asp-route-id="@Model.Height">@Model.Transactions.Count</a></p>
     @{

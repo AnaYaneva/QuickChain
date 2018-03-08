@@ -51,8 +51,10 @@ namespace QuickChain.Node
             AddRepository<SignedTransaction>(services);
             AddRepository<Block>(services);
             AddRepository<Peer>(services);
-
-
+            
+            var sp = services.BuildServiceProvider();
+            var repo = sp.GetService<IRepository<Block>>();
+            services.AddSingleton<IMiningManager>(new MiningManager(repo));
         }
 
         private static void AddRepository<T>(IServiceCollection services) where T : Entity
@@ -89,6 +91,9 @@ namespace QuickChain.Node
 
             var blockRepo = app.ApplicationServices.GetRequiredService<IRepository<Block>>();
             this.SeedData(blockRepo);
+
+            var miningManager = app.ApplicationServices.GetRequiredService<IMiningManager>();
+            miningManager.Start();
         }
 
         private void EnsureMigration<T>(IApplicationBuilder app) where T : DbContext
@@ -110,7 +115,7 @@ namespace QuickChain.Node
                 ParentHash = "GENESIS",
                 TimeStamp = DateTime.UtcNow,
                 Height = 1,
-                Transactions = new List<SignedTransaction>()
+                Transactions = new SignedTransaction[]
                 {
                     this.GenerateTransaction(),
                     this.GenerateTransaction(),
