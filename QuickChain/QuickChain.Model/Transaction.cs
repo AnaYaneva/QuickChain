@@ -17,7 +17,7 @@ namespace QuickChain.Model
         public override string ToString()
         {
             var str = "{";
-            str += $@"""TxHash"":""{TransactionHash}"",""From"":""{From}"",""To"":""{To}"",""Value"":{Value},,""Fee"":{Fee}";
+            str += $@"""TxHash"":""{TransactionHash}"",""From"":""{From}"",""To"":""{To}"",""Value"":{Value},""Fee"":{Fee}";
             str += "}";
             return str;
         }

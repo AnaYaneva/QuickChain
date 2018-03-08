@@ -2,44 +2,41 @@
 @model IEnumerable<SignedTransaction>
 <h2>Transactions</h2>
 
-<div class="limiter">
-    <div class="container-table100">
-        <div class="wrap-table100">
-            <div class="table100 ver3 m-b-110">
-                <div class="table100-head">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th class="column1">Tx hash </th>
-                                <th class="column2">Sender</th>
-                                <th class="column3">Receiver</th>
-                                <th class="column4">Tax</th>
-                                <th class="column5">Value</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
 
-                <div class="table100-body js-pscroll ps ps--active-y">
-                    <table>
-                        <tbody>
-                            @foreach (SignedTransaction transaction in this.Model)
-                            {
-                                <tr>
-                                    <td class="column1"><a asp-area="" asp-controller="Blocks" asp-action="Transaction" asp-route-id="@transaction.TxHash">@transaction.TxHash</a></td>
-                                    <td class="column2">@transaction.From</td>
-                                    <td class="column3">@transaction.To</td>
-                                    <td class="column4">@transaction.UsedGas</td>
-                                    <td class="column5">@transaction.Value</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                    @*<div class="ps__rail-y" style="top: 0px; height: 585px; right: 5px;">
-                            <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 293px;">
-                            </div>
-                        </div>*@
-                </div>
+<div class="container-table100">
+    <div class="wrap-table100">
+        <div class="table100 ver3 m-b-110">
+            <div class="table100-head">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="column1">Tx hash </th>
+                            <th class="column2">Sender</th>
+                            <th class="column3">Receiver</th>
+                            <th class="column5">Value</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+
+            <div class="table100-body js-pscroll ps ps--active-y">
+                <table>
+                    <tbody>
+                        @foreach (SignedTransaction transaction in this.Model)
+                        {
+                            <tr>
+                                <td class="column1"><a asp-area="" asp-controller="Blocks" asp-action="Transaction" asp-route-id="@transaction.TransactionHash">@transaction.TransactionHash</a></td>
+                                <td class="column2">@transaction.From</td>
+                                <td class="column3">@transaction.To</td>
+                                <td class="column5">@transaction.Value</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @*<div class="ps__rail-y" style="top: 0px; height: 585px; right: 5px;">
+                        <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 293px;">
+                        </div>
+                    </div>*@
             </div>
         </div>
     </div>
