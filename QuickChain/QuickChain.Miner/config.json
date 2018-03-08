@@ -1,6 +1,4 @@
 {
-	"Miner": {
-		"nodeUrl": "http://quickchain.azurewebsites.net",
-		"address": "SOME-ADDRESS-FROM-THE-Wallet"
-	}
+  "nodeUrl": "http://quickchain.azurewebsites.net",
+  "address": "SOME-ADDRESS-FROM-THE-Wallet"
 }
