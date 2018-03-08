@@ -13,6 +13,10 @@
             WebResponse response = null;
             HttpStatusCode statusCode = HttpStatusCode.RequestTimeout;
 
+            Config.Conf();
+            var nodeUrl = Config.Configuration["nodeUrl"];
+            var address = Config.Configuration["address"];
+
             do
             {
                 try
@@ -20,7 +24,8 @@
                     statusCode = HttpStatusCode.RequestTimeout;
 
                     // Create a request to Node         //TODO nodeIP   And                          minerAddres
-                    WebRequest request = WebRequest.Create("nodeIpAddress" + "/mining/get-block/" + "minerAddress"); 
+                    string requestUrl = string.Format("{0}/api/MiningJobs/request/{1}", nodeUrl, address);
+                    WebRequest request = WebRequest.Create(requestUrl);
                     request.Method = "GET";
                     request.Timeout = 3000;
                     request.ContentType = "application/json; charset=utf-8";
