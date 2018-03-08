@@ -42,7 +42,7 @@ namespace QuickChain.Web.Controllers
         public IActionResult Transaction(string id)
         {
             SignedTransaction transaction = this.transactionsRepository.GetAll()
-                .FirstOrDefault(t => t.TxHash == id.ToLower());
+                .FirstOrDefault(t => t.TransactionHash == id.ToLower());
 
             return View(transaction);
         }

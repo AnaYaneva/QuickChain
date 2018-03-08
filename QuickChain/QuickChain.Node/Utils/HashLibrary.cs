@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using QuickChain.Model;
+using QuickChain.Node.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,14 +12,10 @@ namespace QuickChain.Node.Utils
 {
     public class HashLibrary : IHashLibrary
     {
-        public string GetHash(SignedTransaction transaction)
+        public string GetHash(TransactionModel transaction)
         {
-            transaction.BlockHeight = 0;
-            transaction.CreatedOn = null;
-            transaction.Id = 0;
             transaction.SignatureR = null;
             transaction.SignatureS = null;
-            transaction.TxHash = null;
 
             string jsonData = JsonConvert.SerializeObject(transaction);
 
@@ -30,7 +27,7 @@ namespace QuickChain.Node.Utils
             }
         }
 
-        public bool IsValidSignature(SignedTransaction transaction, string r, string s)
+        public bool IsValidSignature(TransactionModel transaction, string r, string s)
         {
             // TODO: implement
             return true;

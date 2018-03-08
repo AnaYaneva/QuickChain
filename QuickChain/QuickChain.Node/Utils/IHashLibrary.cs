@@ -1,4 +1,5 @@
 ﻿using QuickChain.Model;
+using QuickChain.Node.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,8 @@ namespace QuickChain.Node.Utils
 {
     public interface IHashLibrary
     {
-        string GetHash(SignedTransaction transaction);
-        bool IsValidSignature(SignedTransaction transaction, string r, string s);
+        string GetHash(TransactionModel transaction);
+        bool IsValidSignature(TransactionModel transaction, string r, string s);
 
     }
 }

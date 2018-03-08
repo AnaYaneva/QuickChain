@@ -136,7 +136,7 @@ namespace QuickChain.Node
                 SignatureR = "TODO",
                 SignatureS = "TODO",
                 TransactionIdentifier = Guid.NewGuid(),
-                TxHash = "todo",
+                TransactionHash = "todo",
                 Value = 1000,
             };
         }
