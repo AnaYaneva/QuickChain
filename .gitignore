@@ -16,3 +16,6 @@
 *.user
 /QuickChain/QuickChain.Data/bin
 /QuickChain/QuickChain.Data/obj
+/QuickChain/QuickChain.Common/bin
+/QuickChain/QuickChain.Common/obj
+/QuickChain/QuickChain.Node/Properties/PublishProfiles/QuickChain - Web Deploy.pubxml

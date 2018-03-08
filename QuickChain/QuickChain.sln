@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickChain.Node", "QuickCha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickChain.Data", "QuickChain.Data\QuickChain.Data.csproj", "{1334101F-95AC-41CA-A6CC-2D8F4B86253A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickChain.Common", "QuickChain.Common\QuickChain.Common.csproj", "{BAAD62C6-46B7-4070-ADED-B71A27DA17B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{1334101F-95AC-41CA-A6CC-2D8F4B86253A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1334101F-95AC-41CA-A6CC-2D8F4B86253A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1334101F-95AC-41CA-A6CC-2D8F4B86253A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAAD62C6-46B7-4070-ADED-B71A27DA17B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAAD62C6-46B7-4070-ADED-B71A27DA17B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAAD62C6-46B7-4070-ADED-B71A27DA17B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAAD62C6-46B7-4070-ADED-B71A27DA17B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
