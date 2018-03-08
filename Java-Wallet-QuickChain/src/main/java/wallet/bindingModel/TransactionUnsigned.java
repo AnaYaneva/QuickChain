@@ -13,24 +13,24 @@ public class TransactionUnsigned {
     @JsonProperty(value = "to")
     private String to;
 
-    @JsonProperty(value = "senderPubKey")
-    private String senderPubKey;
-
     @JsonProperty(value = "value")
     @Min(0)
     private long value;
 
+    @JsonProperty(value = "senderPubKey")
+    private String senderPubKey;
+
     @JsonProperty(value = "fee")
     private long fee;
 
-    @JsonProperty(value = "dateCreated")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ")
-    private Date dateCreated;
+    //@JsonProperty(value = "dateCreated")
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ")
+    //private Date dateCreated;
 
 
     public TransactionUnsigned() {
-        this.dateCreated=new Date();
-        this.fee=20L;
+        //this.dateCreated=new Date();
+        this.fee=00L;
     }
 
     public String getFrom() {
@@ -49,14 +49,6 @@ public class TransactionUnsigned {
         this.to = to;
     }
 
-    public String getSenderPubKey() {
-        return this.senderPubKey;
-    }
-
-    public void setSenderPubKey(String senderPubKey) {
-        this.senderPubKey = senderPubKey;
-    }
-
     public long getValue() {
         return this.value;
     }
@@ -65,19 +57,19 @@ public class TransactionUnsigned {
         this.value = value;
     }
 
+    public String getSenderPubKey() {
+        return this.senderPubKey;
+    }
+
+    public void setSenderPubKey(String senderPubKey) {
+        this.senderPubKey = senderPubKey;
+    }
+
     public long getFee() {
         return this.fee;
     }
 
     public void setFee(long fee) {
         this.fee = fee;
-    }
-
-    public Date getDateCreated() {
-        return this.dateCreated;
-    }
-
-    public void setDateCreated(Date dateCreated) {
-        this.dateCreated = dateCreated;
     }
 }

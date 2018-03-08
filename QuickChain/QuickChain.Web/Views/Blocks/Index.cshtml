@@ -1,18 +1,44 @@
 @using QuickChain.Model;
 @model List<Block>
 <h2>Blocks</h2>
-<div>
-    <table id="blocks">
-        @for (int i = Model.Count - 1; i >= 0; i--)
-        {
-            var block = Model[i];
-            <tr>
-                <td> Block number: <a asp-area="" asp-controller="Blocks" asp-action="Block" asp-route-id="@block.Height">@block.Height</a></td>
-                <td> Transactions: <a asp-area="" asp-controller="Blocks" asp-action="Transactions" asp-route-id="@block.Height">@block.Transactions.Count</a></td>
-                <td> Time: @block.TimeStamp.Date</td>
-            </tr>
+<div class="limiter">
+    <div class="container-table100">
+        <div class="wrap-table100">
+            <div class="table100 ver3 m-b-110">
+                <div class="table100-head">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th class="column1">Block Height</th>
+                            <th class="column2">Transactions</th>
+                            <th class="column3">Date</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
 
-        }
-    </table>
+                <div class="table100-body js-pscroll ps ps--active-y">
+                    <table>
+                        <tbody>
+                        @for (int i = Model.Count - 1; i >= 0; i--)
+                        {
+                            var block = Model[i];
+                            <tr>
+                                <td class="column1"> Block number: <a asp-area="" asp-controller="Blocks" asp-action="Block" asp-route-id="@block.Height">@block.Height</a></td>
+                                <td class="column2"> Transactions: <a asp-area="" asp-controller="Blocks" asp-action="Transactions" asp-route-id="@block.Height">@block.Transactions.Count</a></td>
+                                <td class="column3"> Time: @block.TimeStamp.Date</td>
+                            </tr>
+
+                        }
+                        </tbody>
+                    </table>
+                    @*<div class="ps__rail-y" style="top: 0px; height: 585px; right: 5px;">
+                        <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 293px;">
+                        </div>
+                    </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script src="/js/wallet.js"></script>

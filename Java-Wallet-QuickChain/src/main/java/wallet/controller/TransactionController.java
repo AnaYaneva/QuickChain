@@ -38,9 +38,11 @@ public class TransactionController {
 
     private String message;
 
-    private String transactionSignature;
+    //private String transactionSignature;
 
     private String jsonString;
+
+    private String[] signature=new String[2];
 
     @Autowired
     private AddressService addressService;
@@ -91,11 +93,10 @@ public class TransactionController {
         byte[] hash=this.addressService.getPrivateKeyFromMnemonic(transactionJson);
         byte[][] signed=Secp256k1.signTransaction(hash,DatatypeConverter.parseHexBinary(transactionBindingModel.getPrivateKey()));
 
-        String[] signature=new String[2];
         signature[0]=this.addressService.getStringFromBytes(signed[0]);
         signature[1]=this.addressService.getStringFromBytes(signed[1]);
 
-        transactionSignature=signature[0]+",\n"+signature[1];
+        //transactionSignature=signature[0]+",\n"+signature[1];
 
        return "redirect:/transaction/details";
     }
@@ -124,13 +125,22 @@ public class TransactionController {
         transactionToSend.setTo(transactionUnsigned.getTo());
         transactionToSend.setSenderPubKey(transactionUnsigned.getSenderPubKey());
         transactionToSend.setValue(transactionUnsigned.getValue());
+        transactionToSend.setTransactionIdentifier(java.util.UUID.randomUUID().toString());
+        transactionToSend.setSignatureR(signature[0]);
+        transactionToSend.setSignatureS(signature[1]);
 
-        transactionToSend.setSenderSignature(transactionSignature.split(",\n"));
+        jsonString = mapper.writeValueAsString(transactionToSend);
 
-        String jsonString = mapper.writeValueAsString(transactionToSend);
+        byte[] hash=this.addressService.getPrivateKeyFromMnemonic(jsonString);
+
+        String transactionHash=this.addressService.getStringFromBytes(hash);
+        System.out.println(transactionHash);
+
+        transactionToSend.setTransactionHash(transactionHash);
+
+        jsonString = mapper.writeValueAsString(transactionToSend);
         System.out.println(jsonString);
-        model.addAttribute("jsonString", jsonString);
-        model.addAttribute("signature", transactionSignature);
+
         model.addAttribute("transaction", transactionToSend);
         model.addAttribute("view", "transaction/signed");
 
@@ -140,7 +150,8 @@ public class TransactionController {
     @PostMapping("/transaction/signed")
     public String send(TransactionBindingModel transactionBindingModel) throws IOException {
 
-        postJson(jsonString);
+        postJson(jsonString, transactionToSend.getTransactionHash());
+        System.out.println(jsonString +" \n"+transactionToSend.getTransactionHash());
         return "redirect:/transaction/send";
     }
 
@@ -153,10 +164,11 @@ public class TransactionController {
     }
 
 
-    public void postJson(String json)
+    public void postJson(String json, String hash)
             throws ClientProtocolException, IOException {
         CloseableHttpClient client = HttpClients.createDefault();
-        HttpPost httpPost = new HttpPost("http://192.168.164.22:5555/transaction/send");
+        String url="http://quickchain.azurewebsites.net/api/Transactions/"+hash+"/sign";
+        HttpPost httpPost = new HttpPost(url);
 
 
         StringEntity entity = new StringEntity(json);
