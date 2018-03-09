@@ -1,6 +1,4 @@
-﻿@model object
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html>
 <head>
@@ -11,10 +9,15 @@
         <h1>ETH - <span class="text-primary">QuickChain Faucet</span></h1>
     </div>
 <hr />
-    <form asp-area="" asp-controller="Transactions" asp-action="Faucet" method="post">
+    <form asp-controller="Faucet" asp-action="Index" method="post">
         <input name="address" class="form-control" type="text" placeholder="What's Your Cryptocoin Address?">
         <button type="submit" >Sybmit</button>    
     </form>
+
+    @if(this.ViewBag.IsSend == true)
+    {
+        <h3>Coins send! (TODO: style me)</h3>
+    }
 
 </body>
 </html>
