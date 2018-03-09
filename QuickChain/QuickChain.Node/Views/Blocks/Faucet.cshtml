@@ -1,0 +1,20 @@
+﻿@model object
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+</head>
+<body>
+    <div class="faucet">
+        <h1>ETH - <span class="text-primary">QuickChain Faucet</span></h1>
+    </div>
+<hr />
+    <form asp-area="" asp-controller="Transactions" asp-action="Faucet" method="post">
+        <input name="address" class="form-control" type="text" placeholder="What's Your Cryptocoin Address?">
+        <button type="submit" >Sybmit</button>    
+    </form>
+
+</body>
+</html>
