@@ -11,7 +11,8 @@ function startApp(){
         let signatureS = $('#signatureS').html();
         let transactionHash = $('#transactionHash').html();
         console.log(transactionHash);
-        let url = "http://quickchain.azurewebsites.net/api/Transactions/"+transactionHash+"/send";
+        let url = "http://quickchain.azurewebsites.net/api/Transactions";
+        //let url = "http://quickchain.azurewebsites.net/api/Transactions/"+transactionHash+"/send";
 
         let transaction = {
             from:from,

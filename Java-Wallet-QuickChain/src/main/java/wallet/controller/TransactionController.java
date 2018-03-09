@@ -130,7 +130,7 @@ public class TransactionController {
         transactionToSend.setSignatureS(signature[1]);
 
         jsonString = mapper.writeValueAsString(transactionToSend);
-
+        System.out.println(jsonString);
         byte[] hash=this.addressService.getPrivateKeyFromMnemonic(jsonString);
 
         String transactionHash=this.addressService.getStringFromBytes(hash);
@@ -167,7 +167,8 @@ public class TransactionController {
     public void postJson(String json, String hash)
             throws ClientProtocolException, IOException {
         CloseableHttpClient client = HttpClients.createDefault();
-        String url="http://quickchain.azurewebsites.net/api/Transactions/"+hash+"/sign";
+        String url="http://quickchain.azurewebsites.net/api/Transactions";
+        //String url="http://quickchain.azurewebsites.net/api/Transactions/"+hash+"/send";
         HttpPost httpPost = new HttpPost(url);
 
 
