@@ -42,7 +42,7 @@ public class AddressController {
 
         String password = addressNewBindingModel.getPassword();
 
-        byte[] privateKey=this.addressService.getPrivateKeyFromMnemonic(mnemonic.replace(" ","")+password);
+        byte[] privateKey=this.addressService.getHashFromString(mnemonic.replace(" ","")+password);
         addressCreated.setPrivateKey(this.addressService.getStringFromBytes(privateKey));
 
 
@@ -82,7 +82,7 @@ public class AddressController {
 
         address.setMnemonic(mnemonic);
 
-        byte[] privateKeyBytes=this.addressService.getPrivateKeyFromMnemonic(mnemonic.replace(" ","")+password);
+        byte[] privateKeyBytes=this.addressService.getHashFromString(mnemonic.replace(" ","")+password);
         address.setPrivateKey(this.addressService.getStringFromBytes(privateKeyBytes));
 
         String publicKey=this.addressService.getStringFromBytes(this.addressService.getPublicKey(privateKeyBytes));
@@ -102,59 +102,4 @@ public class AddressController {
 
         return "base-layout";
     }
-
-    /*private byte[] getPrivateKeyFromMnemonic(String mnemonic) throws NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hash = digest.digest(
-                mnemonic.getBytes(StandardCharsets.UTF_8));
-        return hash;
-    }
-
-    private String getStringFromBytes(byte[] hash){
-        return new String(Hex.encode(hash));
-    }
-
-    public static byte[] getPublicKey(byte[] privateKey) {
-        try {
-            ECNamedCurveParameterSpec spec = ECNamedCurveTable.getParameterSpec("secp256k1");
-            ECPoint pointQ = spec.getG().multiply(new BigInteger(1, privateKey));
-
-            return pointQ.getEncoded(false);
-        } catch (Exception e) {
-            //StringWriter errors = new StringWriter();
-            //e.printStackTrace(new PrintWriter(errors));
-            //logger.error(errors.toString());
-            return new byte[0];
-        }
-    }
-
-
-    private String getAddressFromPublicKey(String publicKey) {
-
-        byte[] r = publicKey.getBytes(StandardCharsets.UTF_8);
-        RIPEMD160Digest d = new RIPEMD160Digest();
-        d.update(r, 0, r.length);
-        byte[] o = new byte[d.getDigestSize()];
-        d.doFinal(o, 0);
-        return new String(Hex.encode(o));
-    }*/
-
-
-    //public static void main(String[] args) throws IOException {
-    //    Address address = new Address();
-    //    address.setPublicKey("0431bde103b37da9818dc46b391364d455a3fc57312a48292d5a798c4b07fee917465afc067fe6259a3886fff3cb2e5cc5be930095efda9061baed663dc7f846a0");
-//
-    //    //RIPEMD160Digest
-    //    byte[] r = address.getPublicKey().getBytes(StandardCharsets.UTF_8);
-    //    RIPEMD160Digest d = new RIPEMD160Digest();
-    //    d.update (r, 0, r.length);
-    //    byte[] o = new byte[d.getDigestSize()];
-    //    d.doFinal (o, 0);
-    //    //Hex.encode (o, System.out);
-    //    address.setAddress( new String(Hex.encode(o)));
-//
-    //    System.out.println(address.getAddress());
-    //}
-
-
 }

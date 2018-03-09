@@ -10,9 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import wallet.bindingModel.AddressBalanceBindingModel;
 import wallet.bindingModel.TransactionBindingModel;
 import wallet.entity.Balance;
+import wallet.entity.Constants;
 import wallet.service.crypto.JsonReader;
 
 import java.io.IOException;
+import java.net.URL;
+
+import static wallet.entity.Constants.URL_BALANCE;
 
 @Controller
 public class BalanceController {
@@ -28,16 +32,16 @@ public class BalanceController {
     }
 
     @PostMapping("/balance/create")
-    public String createProcess(AddressBalanceBindingModel addressBalanceBindingModel) throws IOException, JSONException {
+    public String createProcess(AddressBalanceBindingModel addressBalanceBindingModel) throws IOException {
         balance=new Balance();
-        balance.setAddress(addressBalanceBindingModel.getAddress());
 
-        String url="http://quickchain.azurewebsites.net/api/Address/"+addressBalanceBindingModel.getAddress()+"/balance";
+        String url=String.format(URL_BALANCE,addressBalanceBindingModel.getAddress());
         System.out.println(url);
 
-        JSONObject json=JsonReader.readJsonFromUrl(url);
+        ObjectMapper mapper = new ObjectMapper();
 
-        System.out.println(json);
+//JSON from URL to Object
+        balance = mapper.readValue(new URL(url), Balance.class);
 
         return "redirect:/balance/details";
     }
@@ -45,8 +49,7 @@ public class BalanceController {
     @GetMapping("/balance/details")
     public String details(Model model) {
 
-//GET /api/Address/{address}/balance
-
+        model.addAttribute("balance", balance);
         model.addAttribute("view", "balance/details");
 
         return "base-layout";

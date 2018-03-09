@@ -22,7 +22,7 @@ public class JsonReader {
         return sb.toString();
     }
 
-    public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
+    /*public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
         InputStream is = new URL(url).openStream();
         try {
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
@@ -32,11 +32,5 @@ public class JsonReader {
         } finally {
             is.close();
         }
-    }
-
-    public static void main(String[] args) throws IOException, JSONException {
-        JSONObject json = readJsonFromUrl("http://quickchain.azurewebsites.net/api/Address/7457d621ffe2f197c0a22f0f37d8778d37f8b908/balance");
-        System.out.println(json.toString());
-        System.out.println(json.get("address"));
-    }
+    }*/
 }

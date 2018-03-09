@@ -1,15 +1,58 @@
 <main>
-    <div class="container body-content">
-        <div class="row">
-            <div class="col-md-6">
-                <header>
-                    <h2>
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+            <form class="form-horizontal">
+                <fieldset>
+                    <div class="row">
+                    <h3>Balance for Address:</h3>
+                    <h4 th:text="${balance.address}"></h4></div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <h5 style="margin-top: 50px">Confirmed Balance:</h5>
 
-                        balance details!
-                    </h2>
-                </header>
-            </div>
+                            <div class="row">
+                                <div class="col-sm-3 text-right"><p>Confirmed Balance:</p></div>
+                                <div class="col-sm-2 left"><p th:text="${balance.confirmedBalance.balance}"></p></div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3 text-right"><p>Confirmations:</p></div>
+                                <div class="col-sm-2 left"><p th:text="${balance.confirmedBalance.confirmations}"></p>
+                                </div>
+                            </div>
+
+
+                            <h5 style="margin-top: 50px">Pending Balance:</h5>
+
+                            <div class="row">
+                                <div class="col-sm-3 text-right"><p>Confirmed Balance:</p></div>
+                                <div class="col-sm-2 left"><p th:text="${balance.pendingBalance.balance}"></p></div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3 text-right"><p>Confirmations:</p></div>
+                                <div class="col-sm-2 left"><p th:text="${balance.pendingBalance.confirmations}"></p>
+                                </div>
+                            </div>
+
+
+                            <h5 style="margin-top: 50px">Last Mined Balance:</h5>
+
+                            <div class="row">
+                                <div class="col-sm-3 text-right"><p>Confirmed Balance:</p></div>
+                                <div class="col-sm-2 left"><p th:text="${balance.lastMinedBalance.balance}"></p></div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3 text-right"><p>Confirmations:</p></div>
+                                <div class="col-sm-2 left"><p th:text="${balance.lastMinedBalance.confirmations}"></p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
         </div>
     </div>
 </main>
-

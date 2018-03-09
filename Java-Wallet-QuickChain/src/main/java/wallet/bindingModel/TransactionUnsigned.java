@@ -23,14 +23,8 @@ public class TransactionUnsigned {
     @JsonProperty(value = "fee")
     private long fee;
 
-    //@JsonProperty(value = "dateCreated")
-    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ")
-    //private Date dateCreated;
-
-
     public TransactionUnsigned() {
-        //this.dateCreated=new Date();
-        this.fee=00L;
+        this.fee=0L;
     }
 
     public String getFrom() {

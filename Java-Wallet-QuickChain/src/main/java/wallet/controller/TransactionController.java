@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import wallet.bindingModel.TransactionBindingModel;
 import wallet.bindingModel.TransactionToSend;
 import wallet.bindingModel.TransactionUnsigned;
-import wallet.entity.Transaction;
 import wallet.service.AddressService;
-import wallet.service.crypto.Json;
 import wallet.service.crypto.Secp256k1;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+
+import static wallet.entity.Constants.URL_TRANSACTION;
 
 
 @Controller
@@ -37,8 +37,6 @@ public class TransactionController {
     private TransactionUnsigned transactionUnsigned;
 
     private String message;
-
-    //private String transactionSignature;
 
     private String jsonString;
 
@@ -84,19 +82,16 @@ public class TransactionController {
           message="Wrong Private Key or Address";
           return "redirect:/transaction/error";
       }
-        //ObjectMapper mapper = new ObjectMapper();
+
 
         //Object to JSON in String
-        //String transactionJson = mapper.writeValueAsString(transactionUnsigned);
         String transactionJson = mapper.writeValueAsString(transactionUnsigned);
         System.out.println(transactionJson);
-        byte[] hash=this.addressService.getPrivateKeyFromMnemonic(transactionJson);
+        byte[] hash=this.addressService.getHashFromString(transactionJson);
         byte[][] signed=Secp256k1.signTransaction(hash,DatatypeConverter.parseHexBinary(transactionBindingModel.getPrivateKey()));
 
         signature[0]=this.addressService.getStringFromBytes(signed[0]);
         signature[1]=this.addressService.getStringFromBytes(signed[1]);
-
-        //transactionSignature=signature[0]+",\n"+signature[1];
 
        return "redirect:/transaction/details";
     }
@@ -131,7 +126,7 @@ public class TransactionController {
 
         jsonString = mapper.writeValueAsString(transactionToSend);
         System.out.println(jsonString);
-        byte[] hash=this.addressService.getPrivateKeyFromMnemonic(jsonString);
+        byte[] hash=this.addressService.getHashFromString(jsonString);
 
         String transactionHash=this.addressService.getStringFromBytes(hash);
         System.out.println(transactionHash);
@@ -167,8 +162,7 @@ public class TransactionController {
     public void postJson(String json, String hash)
             throws ClientProtocolException, IOException {
         CloseableHttpClient client = HttpClients.createDefault();
-        String url="http://quickchain.azurewebsites.net/api/Transactions";
-        //String url="http://quickchain.azurewebsites.net/api/Transactions/"+hash+"/send";
+        String url=URL_TRANSACTION;
         HttpPost httpPost = new HttpPost(url);
 
 
@@ -178,7 +172,6 @@ public class TransactionController {
         httpPost.setHeader("Content-type", "application/json");
 
         CloseableHttpResponse response = client.execute(httpPost);
-        //assertThat(response.getStatusLine().getStatusCode(), equalTo(200));
         client.close();
     }
 

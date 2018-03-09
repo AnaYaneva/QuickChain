@@ -7,173 +7,80 @@
 
 
                     <div class="form-group">
-                        <label class="col-sm-4 control-label" for="address">Sender's Address</label>
+                        <label class="col-sm-4 control-label" for="address" style="padding: 5px">Sender's Address</label>
                         <div class="col-sm-4 ">
-                            <p id="address" th:text="${transaction.from}"></p>
+                            <p id="address" th:text="${transaction.from}" style="padding: 5px"></p>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-4 control-label" for="rec_address">Receiver's Address</label>
+                        <label class="col-sm-4 control-label" for="rec_address" style="padding: 5px">Receiver's Address</label>
                         <div class="col-sm-4 ">
-                            <p id="rec_address" th:text="${transaction.to}"></p>
+                            <p id="rec_address" th:text="${transaction.to}" style="padding: 5px"></p>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-4 control-label" for="amount">Amount</label>
+                        <label class="col-sm-4 control-label" for="amount" style="padding: 5px">Amount</label>
                         <div class="col-sm-4 ">
-                            <p id="amount" th:text="${transaction.value}"></p>
+                            <p id="amount" th:text="${transaction.value}" style="padding: 5px"></p>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-4 control-label" for="senderPubKey">Sender Public Key</label>
+                        <label class="col-sm-4 control-label" for="senderPubKey" style="padding: 5px">Sender Public Key</label>
                         <div class="col-sm-4 ">
-                            <p id="senderPubKey" th:text="${transaction.senderPubKey}"></p>
+                            <p id="senderPubKey" th:text="${transaction.senderPubKey}" style="padding: 5px"></p>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-4 control-label" for="transactionIdentifier">Transaction Identifier</label>
+                        <label class="col-sm-4 control-label" for="transactionIdentifier" style="padding: 5px">Transaction Identifier</label>
                         <div class="col-sm-4 ">
-                            <p id="transactionIdentifier" th:text="${transaction.transactionIdentifier}"></p>
+                            <p id="transactionIdentifier" th:text="${transaction.transactionIdentifier}" style="padding: 5px"></p>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-4 control-label" for="fee">Fee</label>
+                        <label class="col-sm-4 control-label" for="fee" style="padding: 5px">Fee</label>
                         <div class="col-sm-4 ">
-                            <p id="fee" th:text="${transaction.fee}"></p>
+                            <p id="fee" th:text="${transaction.fee}" style="padding: 5px"></p>
                         </div>
                     </div>
 
 
                     <div class="form-group">
-                    <label class="col-sm-4 control-label" for="signatureR">SignatureR</label>
+                    <label class="col-sm-4 control-label" for="signatureR" style="padding: 5px">SignatureR</label>
                     <div class="col-sm-4 ">
-                        <p id="signatureR" th:text="${transaction.signatureR}"></p>
+                        <p id="signatureR" th:text="${transaction.signatureR}" style="padding: 5px"></p>
                     </div>
                 </div>
 
                     <div class="form-group">
-                        <label class="col-sm-4 control-label" for="signatureS">SignatureS</label>
+                        <label class="col-sm-4 control-label" for="signatureS" style="padding: 5px">SignatureS</label>
                         <div class="col-sm-4 ">
-                            <p id="signatureS" th:text="${transaction.signatureS}"></p>
+                            <p id="signatureS" th:text="${transaction.signatureS}" style="padding: 5px"></p>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-4 control-label" for="transactionHash">Transaction Hash</label>
+                        <label class="col-sm-4 control-label" for="transactionHash" style="padding: 5px">Transaction Hash</label>
                         <div class="col-sm-4 ">
-                            <p id="transactionHash" th:text="${transaction.transactionHash}"></p>
+                            <p id="transactionHash" th:text="${transaction.transactionHash}" style="padding: 5px"></p>
                         </div>
                     </div>
-                    <!--<div class="form-group">
-                        <label class="col-sm-4 control-label" for="textBoxNode">Node Url</label>
-                        <div class="col-sm-4 ">
-                            <input type="text"  class="form-control" id="textBoxNode" value=""
-                                   name="textBoxNode"/>
-                        </div>
-                    </div> -->
-
 
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-4">
-                            <a class="btn btn-default" th:href="@{/transaction/create}">Back</a>
+                            <a class="btn btn-default" th:href="@{/transaction/create}" >Back</a>
                        <input type="submit" id="buttonSendSignedTransaction" class="btn btn-primary"
                                    value="Send Transaction"/>
-                            <input type="button" id="send" class="btn btn-primary"
-                                   value="Send"/>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <textarea class="form-control" rows="6" id="textareaSendTransactionresult"
-                                      name="sendTransactionresult"></textarea>
-                        </div>
-                    </div>
                 </fieldset>
             </form>
         </div>
     </div>
 </main>
 
-<!--     $('#buttonSignTransaction').click(signTransaction);
-
-function signTransaction() {
-        //let privateKey = window.prompt("To sign a transaction you have to write down your private key")
-        let privateKey = $('input[name="senderPrivateKey"]').val(
-       // if(privateKey) {
-            let ec = new elliptic.ec('secp256k1')
-            let keyPair = ec.keyFromPrivate(privateKey)
-            let publicKey = keyPair.getPublic().getX().toString(16) + (keyPair.getPublic().getY().isOdd() ? "1" : "0")
-                )
-            let from = $('input[name="senderAddress"]').val()
-            let to = $('input[name="recipientAddress"]').val()
-            let value = $('input[name="transferAmount"]').val()
-            let senderPubKey = publicKey
-            let senderSignature = [""]
-            let dateCreated = new Date().toString()
-
-            let transaction = {
-                from:from,
-                to:to,
-                value:value,
-                senderPubKey:senderPubKey,
-                senderSignature:senderSignature,
-                dateCreated:dateCreated
-            }
-
-            let transactionJson = JSON.stringify(transaction)
-
-            let signedTransaction = [from,publicKey]
-
-            $('#textareaSignedTransaction').val(signedTransaction)
-        //}
-        //else {
-        //    window.alert("Invalid private key")
-        //}
-    } -->
-
-<!--  $('#buttonSendSignedTransaction').click(sendSignedTransaction);
-    function sendSignedTransaction() {
-        let nodeUrl = $('#textBoxNode').val()
-        let url = nodeUrl + '/transactions/send'
-        let signedTransaction =  $('#signature').val()
-
-        let from = $('#address).val()
-        let to = $('#rec_address').val()
-        let value = $('#amount').val()
-        let senderPubKey = $('#senderPubKey').val()
-        let senderSignature = signedTransaction.split(',')
-        let dateCreated = $('#dateCreated').val()
-
-        let signatureArray = [senderSignature[0], senderSignature[1]]
-        let transaction = {
-            from:from,
-            to:to,
-            value: Number(value),
-            senderPubKey:senderPubKey,
-            senderSignature: signatureArray,
-            dateCreated:dateCreated
-        }
-
-        jsonRequest = JSON.stringify(transaction)
-
-        $.ajax({
-            url: url,
-            method: 'post',
-            dataType: 'json',
-            data: jsonRequest,
-            contentType: "application/json",
-            success: function(data) {
-                $('#textareaSendTransactionresult').val(data.responseJSON.transactionHash)
-            },
-            error: function(err){
-                $('#textareaSendTransactionresult').val(err.responseJSON.error)
-            }
-        })
-    }
--->

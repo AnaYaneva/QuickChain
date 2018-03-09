@@ -1,7 +1,7 @@
 <main>
     <div class="container body-content span=8 offset=2">
         <div class="well">
-            <form class="form-horizontal" >
+            <form class="form-horizontal">
                 <fieldset>
                     <legend>This is your restored wallet</legend>
 
@@ -9,21 +9,22 @@
                         <div class="col-md-12">
                             <article>
 
-                                <h4>Write down the following mnemonic words. With the mnemonic words you can recover this wallet:</h4>
-                                <p th:text="${address.mnemonic}"></p>
+                                <div class="text-justify" style="margin: 50px">
+                                    <h4>
+                                        Write down and keep in SECURE place your private key. Only through it you can
+                                        access
+                                        your coins:</h4>
+                                    <p th:text="${address.privateKey}"></p></div>
 
-                                <h4>
-                                    Write down and keep in SECURE place your private key. Only through it you can access
-                                    your coins:</h4>
-                               <p th:text="${address.privateKey}"></p>
+                                <div class="text-justify" style="margin: 50px">
+                                    <h4>
+                                        Public key:</h4>
+                                    <p th:text="${address.publicKey}"></p></div>
 
-                                <h4>
-                                    Public key:</h4>
-                                <p th:text="${address.publicKey}"></p>
-
-                                <h4>
-                                    Address:</h4>
-                                <p th:text="${address.address}"></p>
+                                <div class="text-justify" style="margin: 50px">
+                                    <h4>
+                                        Address:</h4>
+                                    <p th:text="${address.address}"></p></div>
                             </article>
                         </div>
                     </div>

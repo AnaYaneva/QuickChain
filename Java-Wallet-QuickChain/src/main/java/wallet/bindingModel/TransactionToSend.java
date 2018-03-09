@@ -26,17 +26,10 @@ public class TransactionToSend {
     private String senderPubKey;
 
     @JsonProperty(value = "transactionIdentifier")
-    //@Id
-    //@GeneratedValue(generator = "uuid")
-    //@GenericGenerator(name = "uuid", strategy = "uuid")
     private String transactionIdentifier;
 
     @JsonProperty(value = "fee")
     private long fee;
-
-   // @JsonProperty(value = "dateCreated")
-   // @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ")
-   // private Date dateCreated;
 
     @JsonProperty(value = "signatureR")
     private String signatureR;
@@ -48,8 +41,6 @@ public class TransactionToSend {
     private String transactionHash;
 
     public TransactionToSend() {
-        //this.senderSignature=new String[2];
-        //this.dateCreated=new Date();
         this.fee=0L;
     }
 

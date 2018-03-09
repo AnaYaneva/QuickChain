@@ -8,22 +8,25 @@
                     <div class="form-group">
                         <div class="col-md-12">
                             <article>
-
+                                <div class="text-justify" style="margin: 50px">
                                 <h4>Write down the following mnemonic words. With the mnemonic words you can recover this wallet:</h4>
-                                <p th:text="${address.mnemonic}"></p>
+                                    <p th:text="${address.mnemonic}"></p></div>
 
+                                <div class="text-justify" style="margin: 50px">
                                 <h4>
                                     Write down and keep in SECURE place your private key. Only through it you can access
                                     your coins:</h4>
-                               <p th:text="${address.privateKey}"></p>
+                                    <p th:text="${address.privateKey}"></p></div>
 
+                                <div class="text-justify" style="margin: 50px">
                                 <h4>
                                     Public key:</h4>
-                                <p th:text="${address.publicKey}"></p>
+                                <p th:text="${address.publicKey}"></p></div>
 
+                                <div class="text-justify" style="margin: 50px">
                                 <h4>
                                     Address:</h4>
-                                <p th:text="${address.address}"></p>
+                                    <p th:text="${address.address}"></p></div>
                             </article>
                         </div>
                     </div>
