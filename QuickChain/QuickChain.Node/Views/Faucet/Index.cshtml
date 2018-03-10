@@ -9,15 +9,9 @@
         <h1>ETH - <span class="text-primary">QuickChain Faucet</span></h1>
     </div>
 <hr />
-    <form asp-controller="Faucet" asp-action="Index" method="post">
+    <form id="faucet" asp-controller="Faucet" asp-action="Index" method="post">
         <input name="address" class="form-control" type="text" placeholder="What's Your Cryptocoin Address?">
-        <button type="submit" >Sybmit</button>    
+        <button class="button" type="submit" >Get coin!</button>    
     </form>
-
-    @if(this.ViewBag.IsSend == true)
-    {
-        <h3>Coins send! (TODO: style me)</h3>
-    }
-
 </body>
 </html>

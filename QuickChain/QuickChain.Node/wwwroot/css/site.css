@@ -229,8 +229,8 @@ th, td {
     margin-left: 420px;
 }
 
-input[type=submit] {
-    width: 100%;
+.button {
+    width: 280px;
     background-color: #337ab7;
     color: white;
     padding: 14px 20px;

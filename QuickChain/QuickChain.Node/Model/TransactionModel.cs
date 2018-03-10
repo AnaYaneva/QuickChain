@@ -16,5 +16,6 @@ namespace QuickChain.Node.Model
         public string SignatureR { get; set; }
         public string SignatureS { get; set; }
         public string TransactionHash { get; set; }
+        public DateTime Time { get; set; }
     }
 }

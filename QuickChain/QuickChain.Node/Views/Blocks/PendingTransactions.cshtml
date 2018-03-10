@@ -25,10 +25,9 @@
                         @foreach (SignedTransaction transaction in this.Model)
                         {
                             <tr>
-                                <td class="column1"><a asp-area="" asp-controller="Blocks" asp-action="PendingTransaction" asp-route-id="@transaction.TxHash">@transaction.TxHash</a></td>
+                                <td class="column1"><a asp-area="" asp-controller="Blocks" asp-action="PendingTransaction" asp-route-id="@transaction.TransactionHash">@transaction.TransactionHash</a></td>
                                 <td class="column2">@transaction.From</td>
                                 <td class="column3">@transaction.To</td>
-                                <td class="column4">@transaction.UsedGas</td>
                                 <td class="column5">@transaction.Value</td>
                             </tr>
                         }

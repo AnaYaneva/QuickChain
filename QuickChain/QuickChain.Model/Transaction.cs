@@ -13,7 +13,7 @@ namespace QuickChain.Model
         public decimal Fee { get; set; }
         public Guid TransactionIdentifier { get; set; }
         public string SenderPublicKey { get; set; }
-
+        public DateTime Time { get; set; }
         public override string ToString()
         {
             var str = "{";
