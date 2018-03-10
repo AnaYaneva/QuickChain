@@ -1,14 +1,9 @@
 package wallet.bindingModel;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.annotations.GenericGenerator;
-import org.springframework.data.annotation.Id;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.UniqueConstraint;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.Min;
-import java.util.Date;
+import static wallet.entity.Constants.TRANSACTION_FEE;
 
 public class TransactionToSend {
 
@@ -41,7 +36,7 @@ public class TransactionToSend {
     private String transactionHash;
 
     public TransactionToSend() {
-        this.fee=0L;
+        this.fee=TRANSACTION_FEE;
     }
 
     public String getFrom() {

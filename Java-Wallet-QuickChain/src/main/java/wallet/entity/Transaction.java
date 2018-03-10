@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.Min;
 import java.util.Date;
 
+import static wallet.entity.Constants.TRANSACTION_FEE;
+
 public class Transaction {
 
     @JsonProperty(value = "from")
@@ -44,7 +46,7 @@ public class Transaction {
         this.senderSignature=new String[2];
         this.transferSuccessful=false;
         this.dateCreated=new Date();
-        this.fee=0L;
+        this.fee=TRANSACTION_FEE;
     }
 
     public String getFrom() {

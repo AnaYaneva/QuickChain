@@ -42,6 +42,9 @@ public class TransactionController {
 
     private String[] signature=new String[2];
 
+    private String transactionHash;
+
+
     @Autowired
     private AddressService addressService;
 
@@ -128,7 +131,7 @@ public class TransactionController {
         System.out.println(jsonString);
         byte[] hash=this.addressService.getHashFromString(jsonString);
 
-        String transactionHash=this.addressService.getStringFromBytes(hash);
+        transactionHash=this.addressService.getStringFromBytes(hash);
         System.out.println(transactionHash);
 
         transactionToSend.setTransactionHash(transactionHash);
@@ -152,7 +155,10 @@ public class TransactionController {
 
     @GetMapping("/transaction/send")
     public String sendMessage(Model model) {
+        String url=URL_TRANSACTION+"/"+transactionHash;
 
+        model.addAttribute("hash", transactionHash);
+        model.addAttribute("url", url);
         model.addAttribute("view", "transaction/send");
 
         return "base-layout";

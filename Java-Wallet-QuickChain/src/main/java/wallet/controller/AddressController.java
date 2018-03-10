@@ -65,7 +65,7 @@ public class AddressController {
     }
 
 
-    @GetMapping("/address/restore")
+   /* @GetMapping("/address/restore")
     public String restore(Model model) {
 
         model.addAttribute("view", "address/restore");
@@ -101,5 +101,5 @@ public class AddressController {
         model.addAttribute("view", "address/detailsRestored");
 
         return "base-layout";
-    }
+    }*/
 }

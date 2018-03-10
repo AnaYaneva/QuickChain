@@ -1,0 +1,16 @@
+package wallet.bindingModel;
+
+import javax.validation.constraints.NotNull;
+
+public class FaucetBindingModel {
+    @NotNull
+    private String address;
+
+    public String getAddress() {
+        return this.address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+}
