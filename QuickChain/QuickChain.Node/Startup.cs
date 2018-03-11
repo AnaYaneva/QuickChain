@@ -55,7 +55,8 @@ namespace QuickChain.Node
             var sp = services.BuildServiceProvider();
             var repo = sp.GetService<IRepository<Block>>();
             var hashLib = sp.GetService<IHashLibrary>();
-            services.AddSingleton<IMiningManager>(new MiningManager(repo, hashLib));
+            var stRepo = sp.GetService<IRepository<SignedTransaction>>();
+            services.AddSingleton<IMiningManager>(new MiningManager(repo, hashLib, stRepo));
         }
 
         private static void AddRepository<T>(IServiceCollection services) where T : Entity

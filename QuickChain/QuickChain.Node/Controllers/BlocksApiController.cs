@@ -13,20 +13,21 @@ namespace QuickChain.Node.Controllers
     public class BlocksApiController : Controller
     {
         private readonly IRepository<Block> blockRepository;
-        private readonly INextBlockComposer nextBlockComposer;
+        private readonly IMiningManager miningManager;
+        private readonly IHashLibrary hashLibrary;
         private readonly IRepository<SignedTransaction> transactionsRepository;
 
-        public BlocksApiController(IRepository<Block> blockRepository, INextBlockComposer nextBlockComposer, IRepository<SignedTransaction> transactionsRepository)
+        public BlocksApiController(IRepository<Block> blockRepository, IMiningManager miningManager, IRepository<SignedTransaction> transactionsRepository, IHashLibrary hashLibrary)
         {
             this.blockRepository = blockRepository;
-            this.nextBlockComposer = nextBlockComposer;
+            this.miningManager = miningManager;
             this.transactionsRepository = transactionsRepository;
+            this.hashLibrary = hashLibrary;
         }
 
         [HttpGet]
         public IEnumerable<Block> GetAll(int? page, int? perPage)
         {
-
             return this.blockRepository
                 .GetAll(false)
                 .Skip(((page ?? 1) - 1) * (perPage ?? 20))
@@ -43,31 +44,56 @@ namespace QuickChain.Node.Controllers
         [HttpPost()]
         public string Create([FromBody]Block[] blocks)
         {
-            // TODO: check chain complexity
+            if (blocks.Length == 1)
+            {
+                if (blocks[0].ParentHash == this.miningManager.MinedBlock.ParentHash)
+                {
+                    this.miningManager.AddBlock(blocks[0]);
+                }
+                else
+                {
+                    return "ParentHash does not match. Please provide us with more blocks so that we could compare our chains";
+                }
+            }
+
+            Block firstCommonBlock = this.blockRepository.GetAll()
+                .FirstOrDefault<Block>(b => b.Height == blocks[0].Height);
+
+            if (firstCommonBlock == null)
+            {
+                throw new Exception("No common block! Please provide older blocks.");
+            }
 
             foreach (Block block in blocks)
             {
-                if (!this.nextBlockComposer.IsValidBlock(block))
+                if (!this.hashLibrary.IsValidBlocks(block))
                 {
                     // TODO: remove originator from peers;
                     throw new UnauthorizedAccessException("invalid block");
                 }
             }
 
-            foreach (Block block in blocks)
+            long theirChainComplexity = blocks.Sum(c => c.Difficulty);
+            long ourChainComplexity = this.blockRepository
+                .GetAll()
+                .Where(b => b.Id >= firstCommonBlock.Id)
+                .Sum(c => c.Difficulty);
+
+            if (ourChainComplexity == theirChainComplexity)
             {
-                Block dbBlock = this.blockRepository.Insert(block);
-                foreach(SignedTransaction transaction in dbBlock.Transactions)
-                {
-                    this.transactionsRepository.Insert(transaction);
-                    this.nextBlockComposer.RemoveTransactionFromNextBlock(transaction);
-                }
+                return "Please try again later!";
             }
+            else if (ourChainComplexity > theirChainComplexity)
+            {
+                // TODO: post our chain to the other node
+                return "Our blockchain is longer. Please update your blocks";
+            }
+            else
+            {
+                this.miningManager.MergeChains(blocks.Where(b => b.Id >= firstCommonBlock.Id));
 
-            this.transactionsRepository.Save();
-            this.blockRepository.Save();
-
-            return "Blocks successfully added!";
+               return "Blocks successfully added!";
+            }
         }
     }
 }

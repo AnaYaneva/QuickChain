@@ -59,10 +59,5 @@ namespace QuickChain.Web.Controllers
         {
             return View(/*PendingList.where id == id*/);
         }
-
-        public IActionResult Faucet()
-        {
-            return View();
-        }
     }
 }

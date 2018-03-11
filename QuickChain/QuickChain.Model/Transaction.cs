@@ -9,7 +9,7 @@ namespace QuickChain.Model
         public string TransactionHash { get; set; }
         public string From { get; set; }
         public string To { get; set; }
-        public Decimal Value { get; set; }
+        public decimal Value { get; set; }
         public decimal Fee { get; set; }
         public Guid TransactionIdentifier { get; set; }
         public string SenderPublicKey { get; set; }

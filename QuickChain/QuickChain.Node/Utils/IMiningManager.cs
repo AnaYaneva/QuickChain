@@ -16,5 +16,6 @@ namespace QuickChain.Node.Utils
         void RemoveTransactionFromNextBlock(string transactionHash);
         void AddMinedBlock(Guid jobId, long nounce);
         void MergeChains(IEnumerable<Block> blocks);
+        void AddBlock(Block block);
     }
 }

@@ -33,6 +33,12 @@ namespace QuickChain.Node.Utils
             
         }
 
+        public bool IsValidBlocks(Block block)
+        {
+            // TODO
+            return true;
+        }
+
         public bool IsValidSignature(TransactionModel transaction, string r, string s)
         {
             // TODO: implement

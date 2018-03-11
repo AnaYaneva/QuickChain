@@ -12,6 +12,6 @@ namespace QuickChain.Node.Utils
         string GetHash(TransactionModel transaction);
         string GetHash(Block block);
         bool IsValidSignature(TransactionModel transaction, string r, string s);
-
+        bool IsValidBlocks(Block block);
     }
 }

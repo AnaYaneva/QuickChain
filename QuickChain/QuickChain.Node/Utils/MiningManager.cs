@@ -19,6 +19,7 @@ namespace QuickChain.Node.Utils
         private long miningIteration;
 
         private readonly IRepository<Block> blockRepository;
+        private readonly IRepository<SignedTransaction> transactionsRepository;
         private readonly IHashLibrary hashLibrary;
 
         public Block MinedBlock
@@ -29,10 +30,12 @@ namespace QuickChain.Node.Utils
             }
         }
 
-        public MiningManager(IRepository<Block> blockRepository, IHashLibrary hashLibrary)
+        public MiningManager(IRepository<Block> blockRepository, IHashLibrary hashLibrary, IRepository<SignedTransaction> transactionsRepository)
         {
             this.blockRepository = blockRepository;
             this.hashLibrary = hashLibrary;
+            this.transactionsRepository = transactionsRepository;
+
             this.miningJobs = new Dictionary<Guid, MiningJob>();
             this.blockForMiningJob = new Dictionary<Guid, Block>();
         }
@@ -152,18 +155,47 @@ namespace QuickChain.Node.Utils
         {
             foreach (Block block in blocks)
             {
-                // TOOD: validate
+                // delete old
+                Block oldBlock = this.blockRepository.GetAll().First(b => b.Height == block.Height);
+                IEnumerable<SignedTransaction> oldSignedTransaction = this.transactionsRepository
+                    .GetAll()
+                    .Where(t => t.BlockHeight == oldBlock.Height);
+                foreach(SignedTransaction transaction in oldSignedTransaction)
+                {
+                    this.transactionsRepository.Delete(transaction);
+                }
+
+                // add new
+                Block dbBlock = this.blockRepository.Insert(block);
+                foreach (SignedTransaction transaction in dbBlock.Transactions)
+                {
+                    this.transactionsRepository.Insert(transaction);
+                    this.RemoveTransactionFromNextBlock(transaction.TransactionHash);
+                }
             }
 
-            // TODO: lock threads
-            foreach (Block block in blocks)
-            {
-                this.blockRepository.Insert(block);
-            }
-
+            this.transactionsRepository.Save();
             this.blockRepository.Save();
 
             this.RefreshNextBlock();
+        }
+
+        public void AddBlock(Block block)
+        {
+            if(block.ParentHash != this.minedBlock.ParentHash)
+            {
+                throw new Exception("this is not the next block - the hashes does not match");
+            }
+
+            this.blockRepository.Insert(block);
+            this.blockRepository.Save();
+
+            foreach(SignedTransaction transaction in block.Transactions)
+            {
+                this.transactionsRepository.Insert(transaction);
+                this.RemoveTransactionFromNextBlock(transaction.TransactionHash);
+            }
+            this.transactionsRepository.Save();
         }
     }
 }
