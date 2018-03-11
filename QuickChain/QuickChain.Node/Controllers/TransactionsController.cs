@@ -16,14 +16,14 @@ namespace QuickChain.Node.Controllers
     public class TransactionsController : Controller
     {
         private readonly IRepository<SignedTransaction> transactionsRepository;
+        private readonly MiningManager miningManager;
         private readonly IHashLibrary hashLibrary;
-        private readonly INextBlockComposer nextBlockComposer;
 
-        public TransactionsController(IRepository<SignedTransaction> transactionsRepository, IHashLibrary hashLibrary, INextBlockComposer nextBlockComposer)
+        public TransactionsController(IRepository<SignedTransaction> transactionsRepository, IHashLibrary hashLibrary, MiningManager miningManager)
         {
             this.transactionsRepository = transactionsRepository;
             this.hashLibrary = hashLibrary;
-            this.nextBlockComposer = nextBlockComposer;
+            this.miningManager = miningManager;
         }
 
         [HttpGet]
@@ -85,7 +85,7 @@ namespace QuickChain.Node.Controllers
             SignedTransaction dbTransaction = this.transactionsRepository.Insert(newTransaction);
             this.transactionsRepository.Save();
 
-            this.nextBlockComposer.AddTransactionToNextBlock(dbTransaction);
+            this.miningManager.AddTransactionToNextBlock(dbTransaction);
 
             return dbTransaction;
 

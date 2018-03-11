@@ -44,7 +44,6 @@ namespace QuickChain.Node.Controllers
         public string FaucetSend(string receiverAddress)
         {
 
-
             TransactionModel tr = new TransactionModel();
             tr.Fee = 0;
             tr.From = FaucetAddress;
@@ -82,6 +81,7 @@ namespace QuickChain.Node.Controllers
             ECDsaSigner signer = new ECDsaSigner(kCalculator);
             signer.Init(true, keyParameters);
             BigInteger[] signature = signer.GenerateSignature(data);
+
             return signature;
         }
 

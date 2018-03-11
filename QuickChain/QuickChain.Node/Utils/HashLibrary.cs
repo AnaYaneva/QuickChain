@@ -1,4 +1,7 @@
 ﻿using Newtonsoft.Json;
+using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Parameters;
+using Org.BouncyCastle.Security;
 using QuickChain.Model;
 using QuickChain.Node.Model;
 using System;
@@ -33,7 +36,7 @@ namespace QuickChain.Node.Utils
                 .Select(t => t.TransactionHash)
                 .OrderBy(t => t));
 
-            blockData = string.Format("{0},{1}", blockData, block.Nonce);
+            blockData = string.Format("{0},{1}", blockData, block.Height);
 
             return this.Hash(blockData);
 
@@ -61,6 +64,16 @@ namespace QuickChain.Node.Utils
         {
             // TODO: implement
             return true;
+        }
+
+        public bool VerifySignature(ECPublicKeyParameters pubKey, byte[] signature, string data)
+        {
+            byte[] msgBytes = Encoding.UTF8.GetBytes(data);
+
+            ISigner signer = SignerUtilities.GetSigner("SHA-256withECDSA");
+            signer.Init(false, pubKey);
+            signer.BlockUpdate(msgBytes, 0, msgBytes.Length);
+            return signer.VerifySignature(signature);
         }
     }
 }

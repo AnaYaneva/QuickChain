@@ -10,7 +10,7 @@ namespace QuickChain.Node.Utils
 {
     public class MiningManager : IMiningManager
     {
-        private const int Difficulty = 2;
+        private const int Difficulty = 3;
         private const long MiningDivisions = (1 << 25);
 
         private IDictionary<Guid, MiningJob> miningJobs;

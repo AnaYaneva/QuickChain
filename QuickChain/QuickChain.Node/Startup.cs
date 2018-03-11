@@ -46,7 +46,6 @@ namespace QuickChain.Node
 
             // Add application services.
             services.AddTransient<IHashLibrary, HashLibrary>();
-            services.AddTransient<INextBlockComposer, NextBlockComposer>();
 
             AddRepository<SignedTransaction>(services);
             AddRepository<Block>(services);
