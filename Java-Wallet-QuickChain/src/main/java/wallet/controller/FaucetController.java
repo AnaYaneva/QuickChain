@@ -1,6 +1,5 @@
 package wallet.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -43,6 +42,7 @@ public class FaucetController {
     private String[] signature=new String[2];
 
     private long startTime = 0L;
+    private String address="";
 
     @Autowired
     private AddressService addressService;
@@ -60,7 +60,7 @@ public class FaucetController {
 
         long elapsedTime = (new Date()).getTime() - startTime;
 
-        if (elapsedTime < FAUCET_TIME) {
+        if (elapsedTime < FAUCET_TIME && address.equals(faucetBindingModel.getAddress())) {
             return "redirect:/faucet/error";
         }
 
@@ -70,7 +70,7 @@ public class FaucetController {
         transactionUnsigned.setFrom(FAUCET_ADDRESS);
         transactionUnsigned.setTo(faucetBindingModel.getAddress());
         transactionUnsigned.setValue(FAUCET_VALUE);
-        transactionUnsigned.setSenderPubKey(FAUCET_PUBLIC_KEY);
+        transactionUnsigned.setSenderPublicKey(FAUCET_PUBLIC_KEY);
 
         //Object to JSON in String
         String transactionJson = mapper.writeValueAsString(transactionUnsigned);
@@ -87,7 +87,7 @@ public class FaucetController {
 
         transactionToSend.setFrom(transactionUnsigned.getFrom());
         transactionToSend.setTo(transactionUnsigned.getTo());
-        transactionToSend.setSenderPubKey(transactionUnsigned.getSenderPubKey());
+        transactionToSend.setSenderPublicKey(transactionUnsigned.getSenderPublicKey());
         transactionToSend.setValue(transactionUnsigned.getValue());
         transactionToSend.setTransactionIdentifier(java.util.UUID.randomUUID().toString());
         transactionToSend.setSignatureR(signature[0]);
@@ -106,7 +106,7 @@ public class FaucetController {
         System.out.println(jsonString);
 
         postJson(jsonString, transactionToSend.getTransactionHash());
-
+        address=transactionToSend.getTo();
         return "redirect:/faucet/send";
     }
 
@@ -115,6 +115,7 @@ public class FaucetController {
         String url=URL_TRANSACTION+"/"+transactionHash;
 
         startTime = System.currentTimeMillis();
+
         model.addAttribute("hash", transactionHash);
         model.addAttribute("url", url);
         model.addAttribute("view", "faucet/send");

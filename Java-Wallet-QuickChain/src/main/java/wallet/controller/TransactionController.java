@@ -79,7 +79,7 @@ public class TransactionController {
                        (transactionBindingModel.getPrivateKey()));
        String address=this.addressService.getAddressFromPublicKey(publicKey);
 
-        transactionUnsigned.setSenderPubKey(publicKey);
+        transactionUnsigned.setSenderPublicKey(publicKey);
 
       if (!address.equals(transactionBindingModel.getFrom())){
           message="Wrong Private Key or Address";
@@ -121,7 +121,7 @@ public class TransactionController {
 
         transactionToSend.setFrom(transactionUnsigned.getFrom());
         transactionToSend.setTo(transactionUnsigned.getTo());
-        transactionToSend.setSenderPubKey(transactionUnsigned.getSenderPubKey());
+        transactionToSend.setSenderPublicKey(transactionUnsigned.getSenderPublicKey());
         transactionToSend.setValue(transactionUnsigned.getValue());
         transactionToSend.setTransactionIdentifier(java.util.UUID.randomUUID().toString());
         transactionToSend.setSignatureR(signature[0]);

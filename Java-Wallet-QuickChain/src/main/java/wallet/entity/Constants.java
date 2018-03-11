@@ -15,5 +15,5 @@ public class Constants {
 
     public static final Long TRANSACTION_FEE = 0L;
 
-    public static final Long FAUCET_TIME = 60*60*1000L;
+    public static final Long FAUCET_TIME = 60*1000L;
 }

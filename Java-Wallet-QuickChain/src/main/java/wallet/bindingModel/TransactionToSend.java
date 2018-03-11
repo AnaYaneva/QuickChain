@@ -17,8 +17,8 @@ public class TransactionToSend {
     @Min(0)
     private long value;
 
-    @JsonProperty(value = "senderPubKey")
-    private String senderPubKey;
+    @JsonProperty(value = "senderPublicKey")
+    private String senderPublicKey;
 
     @JsonProperty(value = "transactionIdentifier")
     private String transactionIdentifier;
@@ -63,12 +63,12 @@ public class TransactionToSend {
         this.value = value;
     }
 
-    public String getSenderPubKey() {
-        return this.senderPubKey;
+    public String getSenderPublicKey() {
+        return this.senderPublicKey;
     }
 
-    public void setSenderPubKey(String senderPubKey) {
-        this.senderPubKey = senderPubKey;
+    public void setSenderPublicKey(String senderPublicKey) {
+        this.senderPublicKey = senderPublicKey;
     }
 
     public String getTransactionIdentifier() {

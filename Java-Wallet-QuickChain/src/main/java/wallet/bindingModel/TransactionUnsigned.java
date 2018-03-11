@@ -1,10 +1,8 @@
 package wallet.bindingModel;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.Min;
-import java.util.Date;
 
 import static wallet.entity.Constants.TRANSACTION_FEE;
 
@@ -19,8 +17,8 @@ public class TransactionUnsigned {
     @Min(0)
     private long value;
 
-    @JsonProperty(value = "senderPubKey")
-    private String senderPubKey;
+    @JsonProperty(value = "senderPublicKey")
+    private String senderPublicKey;
 
     @JsonProperty(value = "fee")
     private long fee;
@@ -53,12 +51,12 @@ public class TransactionUnsigned {
         this.value = value;
     }
 
-    public String getSenderPubKey() {
-        return this.senderPubKey;
+    public String getSenderPublicKey() {
+        return this.senderPublicKey;
     }
 
-    public void setSenderPubKey(String senderPubKey) {
-        this.senderPubKey = senderPubKey;
+    public void setSenderPublicKey(String senderPublicKey) {
+        this.senderPublicKey = senderPublicKey;
     }
 
     public long getFee() {
