@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Numerics;
 using System.Text;
 using System.Security.Cryptography;
 using QuickChain.Node.Model;
@@ -18,13 +17,19 @@ using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Asn1.Ocsp;
 using Org.BouncyCastle.Crypto.Signers;
-using BigInteger = System.Numerics.BigInteger;
+using Org.BouncyCastle.Asn1.Nist;
 
 namespace QuickChain.Node.Controllers
 {
     public class FaucetController : Controller
     {
+        private const string FaucetPrivateKey = "c713a77220ccd22ab38dbbbd019ec07d23ba2361335ce56671b5fe7ce9901656";
+        private const string FaucetPublicKey = "04948882b505099c9a801aabe4ae0a855fc26d1c968c100727148c666668f5fc1cc82f3a57c156d79c5c84c48fff0093eb66d42fe894e90e4c680984eb77938640";
+        private const string FaucetAddress = "1bb72da277b3d2c95c8956db4f1f452e47e3409c";
+        private const string FaucetMnemonic = "shock crush better hunt stadium later mutual silly tragic consider journey target";
+
         private HashLibrary hashLibrary = new HashLibrary();
+
         public IActionResult Index()
         {
             return View();
@@ -38,15 +43,12 @@ namespace QuickChain.Node.Controllers
         }
         public string FaucetSend(string receiverAddress)
         {
-            const string faucetPrivateKey = "c713a77220ccd22ab38dbbbd019ec07d23ba2361335ce56671b5fe7ce9901656";
-            const string faucetPublicKey = "04948882b505099c9a801aabe4ae0a855fc26d1c968c100727148c666668f5fc1cc82f3a57c156d79c5c84c48fff0093eb66d42fe894e90e4c680984eb77938640";
-            const string faucetAddress = "1bb72da277b3d2c95c8956db4f1f452e47e3409c";
-            const string faucetMnemonic = "shock crush better hunt stadium later mutual silly tragic consider journey target";
+
 
             TransactionModel tr = new TransactionModel();
             tr.Fee = 0;
-            tr.From = faucetAddress;
-            tr.SenderPublicKey = faucetPublicKey;
+            tr.From = FaucetAddress;
+            tr.SenderPublicKey = FaucetPublicKey;
             tr.To = receiverAddress;
             tr.Value = 1;
             tr.Time = DateTime.UtcNow;
@@ -54,11 +56,11 @@ namespace QuickChain.Node.Controllers
             var hash = hashLibrary.GetHash(tr);
             byte[] tranhash = Convert.FromBase64String(hash);
 
-            BigInteger[] tranSignature = SignData(faucetPrivateKey, tranhash);
+            BigInteger[] tranSignature = SignData(new BigInteger(FaucetPrivateKey), tranhash);
 
             tr.TransactionHash = hash;
             var transactionHash = hashLibrary.GetHash(tr);
-            signTransaction(transactionHash, faucetPrivateKey);
+            signTransaction(transactionHash, FaucetPrivateKey);
 
             return "";
         }
@@ -71,6 +73,9 @@ namespace QuickChain.Node.Controllers
         }
         private BigInteger[] SignData(BigInteger privateKey, byte[] data)
         {
+            // TODO: put curve name
+            string curveName = "";
+            var curve = NistNamedCurves.GetByName(curveName);
             ECDomainParameters ecSpec = new ECDomainParameters(curve.Curve, curve.G, curve.N, curve.H);
             ECPrivateKeyParameters keyParameters = new ECPrivateKeyParameters(privateKey, ecSpec);
             IDsaKCalculator kCalculator = new HMacDsaKCalculator(new Sha256Digest());
