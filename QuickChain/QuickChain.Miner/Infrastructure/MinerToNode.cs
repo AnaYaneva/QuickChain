@@ -24,7 +24,6 @@
                 {
                     statusCode = HttpStatusCode.RequestTimeout;
 
-                    // Create a request to Node         //TODO nodeIP   And                          minerAddres
                     string requestUrl = string.Format("{0}/api/MiningJobs/request?address={1}", nodeUrl, address);
                     WebRequest request = WebRequest.Create(requestUrl);
                     request.Method = "POST";

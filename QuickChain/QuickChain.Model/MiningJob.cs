@@ -6,7 +6,7 @@ namespace QuickChain.Model
     {
         public Guid Id { get; set; }
         public int Index { get; set; }
-        public string BlockHash { get; set; }
+        public string DataHash { get; set; }
         public int Difficulty { get; set; }
         public long NonceFrom { get; set; }
         public long NonceTo { get; set; }

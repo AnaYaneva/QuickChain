@@ -29,14 +29,29 @@ namespace QuickChain.Node.Utils
 
         public string GetHash(Block block)
         {
-            return "TODO";
-            
+            string blockData = string.Join(",", block.Transactions
+                .Select(t => t.TransactionHash)
+                .OrderBy(t => t));
+
+            blockData = string.Format("{0},{1}", blockData, block.Difficulty);
+
+            return this.Hash(blockData);
+
+        }
+
+        private string Hash(string data)
+        {
+            using (SHA256 hashFunction = SHA256.Create())
+            {
+                byte[] hash = hashFunction.ComputeHash(Encoding.ASCII.GetBytes(data));
+
+                return Convert.ToBase64String(hash);
+            }
         }
 
         public bool IsValidBlocks(Block block)
         {
-            // TODO
-            return true;
+            return block.Hash == this.Hash(this.GetHash(block) + block.Nounce);
         }
 
         public bool IsValidSignature(TransactionModel transaction, string r, string s)

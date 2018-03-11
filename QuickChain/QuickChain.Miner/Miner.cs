@@ -23,16 +23,14 @@
                 Console.WriteLine("\nStart new task:");
                 Console.WriteLine($"Index of block to mine: {miningJob.Index}");
                 // Console.WriteLine($"Expected Reward: {blockTemplate.ExpectedReward}");
-                Console.WriteLine($"TransactionsHash: { miningJob.BlockHash}");
+                Console.WriteLine($"TransactionsHash: { miningJob.DataHash}");
                 // Console.WriteLine($"PrevBlockHash: {blockTemplate.PrevBlockHash}");
                 Console.WriteLine($"Difficulty: {miningJob.Difficulty}\n");
 
 
-                string precomputedData = miningJob.Index + miningJob.BlockHash;
-
                 for (long nonce = miningJob.NonceFrom; nonce <= miningJob.NonceTo; nonce++)
                 {
-                    string data = precomputedData + nonce;
+                    string data = miningJob.DataHash + nonce;
                     string blockHash = BytesArrayToHexString(Sha256(Encoding.UTF8.GetBytes(data)));
 
                     bool isPoW = ProofOfWork(miningJob, blockHash);

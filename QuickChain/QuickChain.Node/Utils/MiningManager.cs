@@ -101,7 +101,7 @@ namespace QuickChain.Node.Utils
                 Id = Guid.NewGuid(),
                 Difficulty = Difficulty,
                 Index = this.MinedBlock.Height,
-                BlockHash = this.hashLibrary.GetHash(this.MinedBlock),
+                DataHash = this.hashLibrary.GetHash(this.MinedBlock),
                 NonceFrom = MiningDivisions * this.miningIteration,
                 NonceTo = MiningDivisions * (this.miningIteration + 1),
             };
@@ -135,20 +135,25 @@ namespace QuickChain.Node.Utils
 
         public void AddMinedBlock(Guid jobId, long nounce)
         {
-            // TODO: ValidateBlock
-
             if (this.blockForMiningJob.ContainsKey(jobId))
             {
-                this.blockRepository.Insert(this.blockForMiningJob[jobId]);
+                Block block = this.blockForMiningJob[jobId];
+
+                if(!this.hashLibrary.IsValidBlocks(block))
+                {
+                    throw new Exception("Invalid block");
+                }
+
+                this.blockRepository.Insert(block);
                 this.blockRepository.Save();
+
+                this.miningJobs.Clear();
+                this.blockForMiningJob.Clear();
+
+                this.RefreshNextBlock();
             }
 
             // TODO: reward miners
-
-            this.miningJobs.Clear();
-            this.blockForMiningJob.Clear();
-
-            this.RefreshNextBlock();
         }
 
         public void MergeChains(IEnumerable<Block> blocks)
