@@ -83,9 +83,6 @@ namespace QuickChain.Node.Controllers
             signer.Init(true, keyParameters);
             BigInteger[] signature = signer.GenerateSignature(data);
             return signature;
-
-
-
         }
 
     }

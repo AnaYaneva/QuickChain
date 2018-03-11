@@ -31,7 +31,9 @@
                 for (long nonce = miningJob.NonceFrom; nonce <= miningJob.NonceTo; nonce++)
                 {
                     string data = miningJob.DataHash + nonce;
-                    string blockHash = BytesArrayToHexString(Sha256(Encoding.UTF8.GetBytes(data)));
+                    // string blockHash = BytesArrayToHexString(Sha256(Encoding.UTF8.GetBytes(data)));
+
+                    string blockHash = GetHash(data);
 
                     bool isPoW = ProofOfWork(miningJob, blockHash);
                     if (isPoW)
@@ -47,6 +49,15 @@
             }
         }
 
+        public static string GetHash(string data)
+        {
+            using (SHA256 hashFunction = SHA256.Create())
+            {
+                byte[] hash = hashFunction.ComputeHash(Encoding.ASCII.GetBytes(data));
+
+                return Convert.ToBase64String(hash);
+            }
+        }
 
         public static byte[] Sha256(byte[] array)
         {

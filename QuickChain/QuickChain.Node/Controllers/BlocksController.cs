@@ -20,7 +20,7 @@ namespace QuickChain.Web.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Block> blocks = this.blockRepository.GetAll();
+            IEnumerable<Block> blocks = this.blockRepository.GetAll().ToArray();
 
             return View(blocks);
         }

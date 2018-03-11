@@ -27,8 +27,8 @@
                     string requestUrl = string.Format("{0}/api/MiningJobs/request?address={1}", nodeUrl, address);
                     WebRequest request = WebRequest.Create(requestUrl);
                     request.Method = "POST";
-                    request.Timeout = 3000;
-                    request.ContentType = "application/json; charset=utf-8";
+                    //request.Timeout = 3000;
+                    //request.ContentType = "application/json; charset=utf-8";
 
                     response = request.GetResponse();
                     statusCode = ((HttpWebResponse)response).StatusCode;

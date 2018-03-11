@@ -27,9 +27,9 @@ namespace QuickChain.Node.Controllers
         }
 
         [HttpPost("complete")]
-        public object CompleteJob(Guid jobId, long nounce)
+        public object CompleteJob(Guid jobId, long nonce)
         {
-            this.miningManager.AddMinedBlock(jobId, nounce);
+            this.miningManager.AddMinedBlock(jobId, nonce);
 
             return "Thank you! The server will validate the block and reward all miners if it is valid";
         }

@@ -33,7 +33,7 @@ namespace QuickChain.Node.Utils
                 .Select(t => t.TransactionHash)
                 .OrderBy(t => t));
 
-            blockData = string.Format("{0},{1}", blockData, block.Difficulty);
+            blockData = string.Format("{0},{1}", blockData, block.Nonce);
 
             return this.Hash(blockData);
 
@@ -51,8 +51,11 @@ namespace QuickChain.Node.Utils
 
         public bool IsValidBlocks(Block block)
         {
-            return block.Hash == this.Hash(this.GetHash(block) + block.Nounce);
+            block.Hash = this.Hash(block.DataHash + block.Nonce);
+
+            return block.Hash.StartsWith(new string('0', (int)block.Difficulty));
         }
+
 
         public bool IsValidSignature(TransactionModel transaction, string r, string s)
         {

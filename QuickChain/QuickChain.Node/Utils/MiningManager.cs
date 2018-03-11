@@ -10,7 +10,7 @@ namespace QuickChain.Node.Utils
 {
     public class MiningManager : IMiningManager
     {
-        private const int Difficulty = 1;
+        private const int Difficulty = 2;
         private const long MiningDivisions = (1 << 25);
 
         private IDictionary<Guid, MiningJob> miningJobs;
@@ -114,14 +114,18 @@ namespace QuickChain.Node.Utils
             {
                 transactions.Add(transaction);
             }
-            this.blockForMiningJob.Add(job.Id, new Block()
+
+            var block = new Block()
             {
                 Difficulty = this.MinedBlock.Difficulty,
                 TimeStamp = this.MinedBlock.TimeStamp,
                 Height = this.MinedBlock.Height,
                 ParentHash = this.MinedBlock.ParentHash,
                 Transactions = transactions,
-            });
+            };
+
+            block.DataHash = this.hashLibrary.GetHash(block);
+            this.blockForMiningJob.Add(job.Id, block);
 
             this.miningIteration++;
             if (miningIteration > (1 << 60))
@@ -133,11 +137,12 @@ namespace QuickChain.Node.Utils
             return job;
         }
 
-        public void AddMinedBlock(Guid jobId, long nounce)
+        public void AddMinedBlock(Guid jobId, long nonce)
         {
             if (this.blockForMiningJob.ContainsKey(jobId))
             {
                 Block block = this.blockForMiningJob[jobId];
+                block.Nonce = nonce;
 
                 if(!this.hashLibrary.IsValidBlocks(block))
                 {

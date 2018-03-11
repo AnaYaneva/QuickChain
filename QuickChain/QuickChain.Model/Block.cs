@@ -13,7 +13,9 @@ namespace QuickChain.Model
         public string Hash { get; set; }
         public string ParentHash { get; set; }
         public long Difficulty { get; set; }
-        public long Nounce { get; set; }
+        public long Nonce { get; set; }
+
+        public string DataHash { get; set; }
         //public int Size { get; set; }
         //public override string ToString()
         //{
