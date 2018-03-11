@@ -8,7 +8,7 @@ namespace QuickChain.Model
         public int Index { get; set; }
         public string BlockHash { get; set; }
         public int Difficulty { get; set; }
-        public long NounceFrom { get; set; }
-        public long NounceTo { get; set; }
+        public long NonceFrom { get; set; }
+        public long NonceTo { get; set; }
     }
 }

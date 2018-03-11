@@ -14,59 +14,35 @@
 
         static void Main(string[] args)
         {
-            Stopwatch timer = new Stopwatch();
-            TimeSpan maxBlockTime = new TimeSpan(0, 0, 5);
-
             while (true)
             {
-                timer.Start();
-
                 string responseFromNode = MinerToNode.GetRequestToNode();
 
-                MiningJob blockTemplate = JsonConvert.DeserializeObject<MiningJob>(responseFromNode);
-                
+                MiningJob miningJob = JsonConvert.DeserializeObject<MiningJob>(responseFromNode);
+
                 Console.WriteLine("\nStart new task:");
-                Console.WriteLine($"Index of block to mine: {blockTemplate.Index}");
+                Console.WriteLine($"Index of block to mine: {miningJob.Index}");
                 // Console.WriteLine($"Expected Reward: {blockTemplate.ExpectedReward}");
-                Console.WriteLine($"TransactionsHash: { blockTemplate.BlockHash}");
+                Console.WriteLine($"TransactionsHash: { miningJob.BlockHash}");
                 // Console.WriteLine($"PrevBlockHash: {blockTemplate.PrevBlockHash}");
-                Console.WriteLine($"Difficulty: {blockTemplate.Difficulty}\n");
+                Console.WriteLine($"Difficulty: {miningJob.Difficulty}\n");
 
 
-                bool blockFount = false;
-                long nonce = 0;
-                string precomputedData = blockTemplate.Index + blockTemplate.BlockHash;
-                string timestamp = DateTime.UtcNow.ToString("o");
+                string precomputedData = miningJob.Index + miningJob.BlockHash;
 
-                while (!blockFount && nonce < long.MaxValue)
+                for (long nonce = miningJob.NonceFrom; nonce <= miningJob.NonceTo; nonce++)
                 {
-                    string data = precomputedData + timestamp + nonce;
-
+                    string data = precomputedData + nonce;
                     string blockHash = BytesArrayToHexString(Sha256(Encoding.UTF8.GetBytes(data)));
 
-                    bool isPoW = ProofOfWork(precomputedData,blockTemplate,blockHash,timestamp,nonce);
+                    bool isPoW = ProofOfWork(miningJob, blockHash);
                     if (isPoW)
                     {
                         Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                         Console.WriteLine("Found Block !!!");
                         Console.WriteLine($"Block Hash: {blockHash}\n");
 
-                        MinerToNode.PostRequestToNode(blockHash, timestamp, nonce);
-
-                        blockFount = true;
-                        break;
-                    }
-
-                    if (nonce % 100000 == 0)
-                    {
-                        timestamp = DateTime.UtcNow.ToString("o");
-                    }
-
-                    nonce++;
-
-                    if (maxBlockTime < timer.Elapsed)
-                    {
-                        timer.Reset();
+                        MinerToNode.PostRequestToNode(nonce, miningJob);
                         break;
                     }
                 }
@@ -93,17 +69,19 @@
             return result.ToString();
         }
 
-        private static bool ProofOfWork(string precomputedData, MiningJob blockTemplate, string blockHash, string timestamp, long nonce)
+        private static bool ProofOfWork(MiningJob miningJob, string blockHash)
         {
-            int sum = 0;
-            for (int i = 0; i < blockTemplate.Difficulty; i++)
-            {
-                sum += blockHash[i];
-            }
+            //int sum = 0;
+            //for (int i = 0; i < miningJob.Difficulty; i++)
+            //{
+            //    sum += blockHash[i];
+            //}
 
-            int expectedSum = 48 * blockTemplate.Difficulty;
+            //int expectedSum = 48 * miningJob.Difficulty;
 
-            return sum == expectedSum;
+            //return sum == expectedSum;
+
+            return blockHash.StartsWith(new string('0', miningJob.Difficulty));
         }
 
     }

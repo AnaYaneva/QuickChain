@@ -1,4 +1,5 @@
 {
+  "nodeUrl1": "http://localhost:61376",
   "nodeUrl": "http://quickchain.azurewebsites.net",
   "address": "SOME-ADDRESS-FROM-THE-Wallet"
 }

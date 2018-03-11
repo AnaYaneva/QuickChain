@@ -1,6 +1,7 @@
 ﻿namespace QuickChain.Miner.Infrastructure
 {
     using Newtonsoft.Json.Linq;
+    using QuickChain.Model;
     using System;
     using System.IO;
     using System.Net;
@@ -58,67 +59,56 @@
             return responseFromNode;
         }
 
-        public static void PostRequestToNode(string blockHash, string timestamp, long nonce)
+        public static void PostRequestToNode(long nonce, MiningJob miningJob)
         {
-           // var nodeUrltest = Config["Miner: nodeUrl"];
-
-            // TODO - read from config
-           // string nodeUrl = "http://quickchain.azurewebsites.net";
-           // string address = "SOME-ADDRESS-FROM-THE-Wallet";
-
             Config.Conf();
             var nodeUrl = Config.Configuration["nodeUrl"];
             var address = Config.Configuration["address"];
 
-            JObject obj = JObject.FromObject(new
+            var obj = new MinedHash()
             {
-                nonce = nonce.ToString(),
-                dateCreated = timestamp,
-                blockHash = blockHash
-            });
+                MiningJobId = miningJob.Id,
+                Nonce = nonce,
+            };
 
             byte[] blockFoundData = Encoding.UTF8.GetBytes(obj.ToString());
             int retries = 0;
 
             HttpStatusCode statusCode = HttpStatusCode.OK;
 
-            do
+            try
             {
-                try
-                {
-                    statusCode = HttpStatusCode.RequestTimeout;
+                statusCode = HttpStatusCode.RequestTimeout;
 
-                    //TODO nodeIP   And                          minerAddres
-                    string requestUrl = string.Format("{0}/api/MiningJobs/request/{1}", nodeUrl, address);
-                    WebRequest request = WebRequest.Create(requestUrl);
-                    request.Method = "POST";
-                    request.Timeout = 3000;
-                    request.ContentType = "application/json; charset=utf-8";
+                string requestUrl = string.Format("{0}/api/MiningJobs/complete?jobId={1}&nonce={2}", nodeUrl, miningJob.Id.ToString("N"), nonce);
+                WebRequest request = WebRequest.Create(requestUrl);
+                request.Method = "POST";
+                //request.Timeout = 3000;
+                //request.ContentType = "application/json; charset=utf-8";
 
-                    var dataStream = request.GetRequestStream();
-                    dataStream.Write(blockFoundData, 0, blockFoundData.Length);
-                    dataStream.Close();
+                //var dataStream = request.GetRequestStream();
+                //dataStream.Write(blockFoundData, 0, blockFoundData.Length);
+                //dataStream.Close();
 
-                    WebResponse response = request.GetResponse();
-                    statusCode = ((HttpWebResponse)response).StatusCode;
+                WebResponse response = request.GetResponse();
+                statusCode = ((HttpWebResponse)response).StatusCode;
 
-                    Console.WriteLine(((HttpWebResponse)response).StatusDescription);
-                    response.Close();
-                }
-                catch (WebException e)
-                {
-                    Console.WriteLine("WebException raised!");
-                    Console.WriteLine("{0}\n", e.Message);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Exception raised!");
-                    Console.WriteLine("Source : {0}", e.Source);
-                    Console.WriteLine("Message : {0}\n", e.Message);
-                }
+                Console.WriteLine(((HttpWebResponse)response).StatusDescription);
+                response.Close();
+            }
+            catch (WebException e)
+            {
+                Console.WriteLine("WebException raised!");
+                Console.WriteLine("{0}\n", e.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception raised!");
+                Console.WriteLine("Source : {0}", e.Source);
+                Console.WriteLine("Message : {0}\n", e.Message);
+            }
 
-                System.Threading.Thread.Sleep(1000);
-            } while (statusCode != HttpStatusCode.OK && retries++ < 3);
+
         }
     }
 }

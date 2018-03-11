@@ -10,8 +10,8 @@ namespace QuickChain.Node.Utils
 {
     public class MiningManager : IMiningManager
     {
-        private const int Difficulty = (1 << 10);
-        private const long MiningDivisions = (1 << 20);
+        private const int Difficulty = 1;
+        private const long MiningDivisions = (1 << 25);
 
         private IDictionary<Guid, MiningJob> miningJobs;
         private IDictionary<Guid, Block> blockForMiningJob;
@@ -99,8 +99,8 @@ namespace QuickChain.Node.Utils
                 Difficulty = Difficulty,
                 Index = this.MinedBlock.Height,
                 BlockHash = this.hashLibrary.GetHash(this.MinedBlock),
-                NounceFrom = MiningDivisions * this.miningIteration,
-                NounceTo = MiningDivisions * (this.miningIteration + 1),
+                NonceFrom = MiningDivisions * this.miningIteration,
+                NonceTo = MiningDivisions * (this.miningIteration + 1),
             };
 
             this.miningJobs.Add(job.Id, job);
@@ -134,8 +134,11 @@ namespace QuickChain.Node.Utils
         {
             // TODO: ValidateBlock
 
-            this.blockRepository.Insert(this.blockForMiningJob[jobId]);
-            this.blockRepository.Save();
+            if (this.blockForMiningJob.ContainsKey(jobId))
+            {
+                this.blockRepository.Insert(this.blockForMiningJob[jobId]);
+                this.blockRepository.Save();
+            }
 
             // TODO: reward miners
 

@@ -7,6 +7,6 @@ namespace QuickChain.Model
     public class MinedHash
     {
         public Guid MiningJobId { get; set; }
-        public long Nounce { get; set; }
+        public long Nonce { get; set; }
     }
 }
